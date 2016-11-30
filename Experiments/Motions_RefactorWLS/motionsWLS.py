@@ -42,17 +42,17 @@ class CustomMotions():
         self.tts = ALProxy("ALTextToSpeech", IP_PR, PORT_PR)
     #__init__ (default constructor)
 
-    def standUp(self, speedPR):
+    def standUp(self, speedPR=1):
         self.motionProxy.wakeUp()
         self.postureProxy.goToPosture("StandInit", speedPR)
     #standUp
 
-    def sitDown(self, speedPR):
+    def sitDown(self, speedPR=1):
         self.motionProxy.wakeUp()
         self.postureProxy.goToPosture("Sit", speedPR)
     #standUp
 
-    def wave(self, async):
+    def wave(self, async=False):
         names = list()
         times = list()
         keys = list()
@@ -169,6 +169,9 @@ class CustomMotions():
         self.motionProxy.setAngles("HeadYaw", math.radians(degreesPR), .1)
     #lookTo
 
+    def lookForward(self):
+        self.lookTo(0)
+
     def lookAroundForMark(self, markNumPR=None):
         self.motionProxy.moveInit()
         time.sleep(1)
@@ -210,7 +213,7 @@ class CustomMotions():
         return markData
     #lookAroundForMark
 
-    def lookAroundForMarkMoving(self, number):
+    def lookAroundForMarkMoving(self, markNumPR):
         self.motionProxy.moveInit()
         time.sleep(1)
 
@@ -248,7 +251,9 @@ class CustomMotions():
                                                  self.landmarkProxy)
 
             if not (markData is None or len(markData) == 0):
-                if NaoMarkModule.getMarkNumber(markData) == number:
+                if markNumPR is None or\
+                        (NaoMarkModule.getMarkNumber(markData) ==
+                             markNumPR):
                     markFound = True
             first = False
         return markData
