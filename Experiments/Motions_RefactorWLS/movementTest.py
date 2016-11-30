@@ -6,55 +6,25 @@ from naoqi import ALProxy
 from BrokerController import BrokerController
 from BotFreezerModule import BotFreezerModule
 
-# ----------------
-# Global constants
-# ----------------
-robotIP = "10.0.0.7"
-PORT = 9559
-
-# ----------------
-# Global variables
-# ----------------
-postureProxy = ALProxy("ALRobotPosture", robotIP, PORT)
-lifeProxy = ALProxy("ALAutonomousLife", robotIP, PORT)
-tts = ALProxy("ALTextToSpeech", robotIP, PORT)
-motionProxy = ALProxy("ALMotion", robotIP, PORT)
-curAngle = 0
-BotFreezer = None
-cmModule = None
-FootFreezer = None
-
 # ----
 # Main
 # ----
 def main():
-    global brokyControlly
-    brokyControlly = BrokerController()
-    brokyControlly.createBroker()
+    #tts = ALProxy("ALTextToSpeech", robotIP, PORT)
 
-    global BotFreezer
-    BotFreezer = BotFreezerModule("BotFreezer")
+    motions = CustomMotions()
 
-    global cmModule
-    cmModule = CustomMotions("cmModule")
-    cm = ALProxy("cmModule")
+    motions.standUp(1)
 
-    motionProxy.setStiffnesses("Body", 1)
-    postureProxy.goToPosture("StandInit", 1)
+    # motions.turnLeft(45)
+    # motions.turnRight(45)
+    # motions.turnAround("left")
+    # motions.turnAround("right")
+    motions.lookTo(45)
+    motions.detectMarkWalkStraight(107)
+    motions.lookTo(0)
 
-    motionProxy.setExternalCollisionProtectionEnabled("All", False)
-    movementResult = cm.post.turnLeft(45)
-    cm.wait(movementResult, 0)
-    movementResult = cm.post.turnRight(45)
-    cm.wait(movementResult, 0)
-    movementResult = cm.post.turnAround("left")
-    cm.wait(movementResult, 0)
-    movementResult = cm.post.turnAround("right")
-    cm.wait(movementResult, 0)
-    movementResult = cm.post.lookTo(45)
-    cm.wait(movementResult, 0)
-    movementResult = cm.post.detectMarkWalkStraight(107)
-    cm.wait(movementResult, 0)
+    motions.sitDown(1)
 #main
 
 main()

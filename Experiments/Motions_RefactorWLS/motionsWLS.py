@@ -20,22 +20,26 @@ import math
 # Application imports
 # -------------------
 import NaoMarkModule
-from naoqi import ALModule
 from naoqi import ALProxy
 
 # -----------------
 # Class and methods
 # -----------------
-class CustomMotions(ALModule):
+class CustomMotions():
     """A module for all the motions defined by the Senior Design team"""
-    def __init__(self, robotIP_PR="10.0.0.7", PORT_PR=9559):
+    def __init__(self, IP_PR="10.0.0.7", PORT_PR=9559):
         self.naoMarkSize = .12
         self.stepArray = [["StepHeight", 0.015], ["MaxStepX", 0.02],
                           ["MaxStepTheta", .18]]
         self.curAngle = 0
-        self.motionProxy = ALProxy("ALMotion", robotIP_PR, PORT_PR)
-        self.postureProxy = ALProxy("ALRobotPosture", robotIP_PR, PORT_PR)
-        self.tts = ALProxy("ALTextToSpeech", robotIP_PR, PORT_PR)
+        self.motionProxy = ALProxy("ALMotion", IP_PR, PORT_PR)
+        self.motionProxy.setStiffnesses("Body", 1)
+        self.motionProxy.\
+            setExternalCollisionProtectionEnabled("All", False)
+        self.postureProxy = ALProxy("ALRobotPosture", IP_PR, PORT_PR)
+        self.memoryProxy = ALProxy("ALMemory", IP_PR, PORT_PR)
+        self.landmarkProxy = ALProxy("ALLandMarkDetection", IP_PR, PORT_PR)
+        self.tts = ALProxy("ALTextToSpeech", IP_PR, PORT_PR)
     #__init__ (default constructor)
 
     def standUp(self, speedPR):
@@ -173,7 +177,8 @@ class CustomMotions(ALModule):
         markFound = False
         headAngle = .25
         back = False
-        markData = NaoMarkModule.getMarkData(robotIP, PORT)
+        markData = NaoMarkModule.getMarkData(self.memoryProxy,
+                                             self.landmarkProxy)
         first = True
 
         while not markFound:
@@ -193,7 +198,8 @@ class CustomMotions(ALModule):
             self.motionProxy.angleInterpolation(names, headAngle,
                                                 times, isAbsolute)
 
-            markData = NaoMarkModule.getMarkData(robotIP, PORT)
+            markData = NaoMarkModule.getMarkData(self.memoryProxy,
+                                                 self.landmarkProxy)
 
             if not (markData is None or len(markData) == 0):
                 if markNumPR is None or\
@@ -212,7 +218,8 @@ class CustomMotions(ALModule):
         markFound = False
         headAngle = .25
         back = False
-        markData = NaoMarkModule.getMarkData(robotIP, PORT)
+        markData = NaoMarkModule.getMarkData(self.memoryProxy,
+                                             self.landmarkProxy)
         first = True
         attempts = 0
 
@@ -237,7 +244,8 @@ class CustomMotions(ALModule):
             self.motionProxy.angleInterpolation(names, headAngle, times,
                                            isAbsolute)
 
-            markData = NaoMarkModule.getMarkData(robotIP, PORT)
+            markData = NaoMarkModule.getMarkData(self.memoryProxy,
+                                                 self.landmarkProxy)
 
             if not (markData is None or len(markData) == 0):
                 if NaoMarkModule.getMarkNumber(markData) == number:
@@ -249,9 +257,6 @@ class CustomMotions(ALModule):
     def detectMarkSearch(self, number, directionPR="forward"):
         markD = None
         searching = True
-        global naomarkSize
-        global robotIP
-        global PORT
         while searching:
             markD = CustomMotions.lookAroundForMarkMoving(self, number)
             if not (markD is None or len(markD) == 0):
@@ -261,8 +266,8 @@ class CustomMotions(ALModule):
                 print "tried turn"
                 CustomMotions.turnRight30(self)
 
-        x, y, z = NaoMarkModule.getMarkXYZ(robotIP, PORT, markD,
-                                           naomarkSize)
+        x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markD,
+                                           self.naoMarkSize)
 
         if directionPR == "l":
             CustomMotions.moveForwardY(self, x, y + .35)
@@ -295,13 +300,12 @@ class CustomMotions(ALModule):
 
     def detectMarkAndMoveTo(self, markNumPR=None, offsetY=0):
         markD = CustomMotions.lookAroundForMark(self, markNumPR)
-        x, y, z = NaoMarkModule.getMarkXYZ(robotIP, PORT, markD,
-                                           naomarkSize)
+        x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markD,
+                                           self.naoMarkSize)
         CustomMotions.moveForward(self, x - .15, y + offsetY)
     #detectMarkAndMoveTo
 
     def detectMarkWalkStraight(self, markNumPR=None):
-        global naomarkSize
         CustomMotions.turnToLookAngle(self)
         CustomMotions.detectMarkAndMoveTo(self, markNumPR)
     #detectMarkWalkStraight
