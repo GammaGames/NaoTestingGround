@@ -1,8 +1,10 @@
 # -------------------
 # Application imports
 # -------------------
-from motionsWLS import CustomMotions
 from naoqi import ALProxy
+
+from CustomMotions import CustomMotions
+
 
 # ----
 # Main

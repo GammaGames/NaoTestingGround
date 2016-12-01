@@ -13,14 +13,13 @@
 # --------------
 # Python imports
 # --------------
-import time
 import math
+import time
 
-# -------------------
-# Application imports
-# -------------------
-import NaoMarkModule
 from naoqi import ALProxy
+
+import NaoMarkModule
+
 
 # -----------------
 # Class and methods
@@ -314,4 +313,4 @@ class CustomMotions():
         CustomMotions.turnToLookAngle(self)
         CustomMotions.detectMarkAndMoveTo(self, markNumPR)
     #detectMarkWalkStraight
-#end motionsWLS.py
+#end CustomMotions.py
