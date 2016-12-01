@@ -1,22 +1,14 @@
-# *************************************************************
-# PROJECT:    ShowRobbieGUI
+# ****************************************************************
+# PROJECT: ShowRobbieGUI
 #
-# FILE:       Routine.py
+# EXECUTION ENVIRONMENTS: Eclipse Neon.1 with PyDev
 #
-# DEVELOPMENT ENVIRONMENTS:
-# Eclipse Neon.1 with PyDev  with Python 2.7.11
+# DEVELOPED WITH: Python 2.7 on Windows 10
 #
-# EXECUTION ENVIRIONMENTS
-# Eclipse Neon.1 with PyDev with Python 2.7.11
+# AUTHOR: Jesse Lieberg
 #
-# HISTORY:
-# Date        Author            Description
-# ====        ======            ===========
-# 11/2/16     Jesse Lieberg     Initial Creation
-#
-# DESCRIPTION
-# 
-# **************************************************************
+# DESCRIPTION: Routine superclass for routines to run from the GUI
+# ****************************************************************
 
 # -------------------
 # Application imports

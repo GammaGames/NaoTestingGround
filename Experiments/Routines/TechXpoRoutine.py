@@ -1,11 +1,11 @@
 # *************************************************************
-# PROJECT:    ShowRobbie2
+# PROJECT: ShowRobbie2
+#
+# EXECUTION ENVIRONMENTS: Python 2.7 on Windows 10
 #
 # DEVELOPED WITH:
-# Eclipse Neon.1 with PyDev on Windows 10, PyCharm Community 2016.3 on Windows 7
-#
-# EXECUTION ENVIRIONMENTS
-# Python 2.7 on Windows 10
+# Eclipse Neon.1 with PyDev on Windows 10,
+# PyCharm Community 2016.3 on Windows 7
 #
 # AUTHORS: Jesse Lieberg, Logan Warner
 #
@@ -22,7 +22,6 @@ import time
 # -------------------
 import Routine
 from naoqi import ALProxy
-
 from CustomMotions import CustomMotions
 
 

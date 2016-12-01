@@ -1,12 +1,36 @@
-#Module for Nao Mark Visual Functions
-
+# ********************************************************
+# PROJECT: ShowRobbie2
+#
+# EXECUTION ENVIRONMENTS: Python 2.7 on Windows 10
+#
+# DEVELOPED WITH: PyCharm Community 2016.2.3 on Windows 7
+#
+# AUTHORS: Unknown, Logan Warner
+#
+# DESCRIPTION: Module for Nao Mark Visual Functions
+# ********************************************************
 # -*- encoding: UTF-8 -*-
-from naoqi import ALProxy
+
+# --------------
+# Pyhton imports
+# --------------
 import math
+
+# -------------------
+# Application imports
+# -------------------
 import almath
 
-#Returns a multiple dimension array of naomark data
+# ---------
+# Functions
+# ---------
 def getMarkData (memoryProxyPR, landmarkProxyPR):
+    """
+    Returns a multidimensional array of naomark data
+    :param memoryProxyPR:
+    :param landmarkProxyPR:
+    :return: markData
+    """
     #Subscribe to landmarkDetected
     landmarkProxyPR.subscribe("GetLandMarkData")
 

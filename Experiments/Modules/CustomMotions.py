@@ -3,9 +3,11 @@
 #
 # EXECUTION ENVIRONMENTS: Python 2.7 on Windows 7
 #
-# DEVELOPED WITH: Pycharm 2016.2.3
+# DEVELOPED WITH:
+# Pycharm 2016.2.3 on Windows 10,
+# Pycharm 2016.2.3 on Windows 7
 #
-# AUTHORS: Unknown, Logan Warner, Jessie Lieberg
+# AUTHORS: Unknown, Logan Warner, Jesse Lieberg
 #
 # DESCRIPTION: Convenience functions for moving the robot
 # *******************************************************
@@ -16,6 +18,9 @@
 import math
 import time
 
+# -------------------
+# Application imports
+# -------------------
 from naoqi import ALProxy
 
 import NaoMarkModule

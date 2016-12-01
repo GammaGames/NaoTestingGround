@@ -2,7 +2,6 @@
 # Application imports
 # -------------------
 from naoqi import ALProxy
-
 from CustomMotions import CustomMotions
 
 
