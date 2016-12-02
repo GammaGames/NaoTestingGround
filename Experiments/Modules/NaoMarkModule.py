@@ -36,7 +36,6 @@ def getMarkData (memoryProxyPR, landmarkProxyPR):
 
     #Wait for a mark to be detected
     markData = memoryProxyPR.getData("LandmarkDetected")
-    markData = memoryProxyPR.getData("LandmarkDetected")
 
     #Unsubscribe to proxy
     landmarkProxyPR.unsubscribe("GetLandMarkData")
@@ -69,7 +68,8 @@ def getMarkXYZ (motionProxy, markData, landmarkSize):
     angularSize = markData[1][0][0][3]
 
     # Compute distance to landmark.
-    distanceFromCameraToLandmark = landmarkSize / ( 2 * math.tan( angularSize / 2))
+    distanceFromCameraToLandmark =\
+        landmarkSize / ( 2 * math.tan( angularSize / 2))
 
     # Retrieve landmark center position in radians.
     wzCamera = markData[1][0][0][1]
@@ -81,12 +81,17 @@ def getMarkXYZ (motionProxy, markData, landmarkSize):
     robotToCamera = almath.Transform(transformList)
 
     # Compute the rotation to point towards the landmark.
-    cameraToLandmarkRotationTransform = almath.Transform_from3DRotation(0, wyCamera, wzCamera)
+    cameraToLandmarkRotationTransform =\
+        almath.Transform_from3DRotation(0, wyCamera, wzCamera)
 
     # Compute the translation to reach the landmark.
-    cameraToLandmarkTranslationTransform = almath.Transform(distanceFromCameraToLandmark, 0, 0)
+    cameraToLandmarkTranslationTransform =\
+        almath.Transform(distanceFromCameraToLandmark, 0, 0)
 
-    # Combine all transformations to get the landmark position in NAO space.
-    robotToLandmark = robotToCamera * cameraToLandmarkRotationTransform *cameraToLandmarkTranslationTransform
+    # Combine all transformations to get the landmark position in NAO space
+    robotToLandmark = robotToCamera *\
+                      cameraToLandmarkRotationTransform *\
+                      cameraToLandmarkTranslationTransform
 
-    return robotToLandmark.r1_c4, robotToLandmark.r2_c4, robotToLandmark.r3_c4
+    return robotToLandmark.r1_c4,\
+           robotToLandmark.r2_c4, robotToLandmark.r3_c4

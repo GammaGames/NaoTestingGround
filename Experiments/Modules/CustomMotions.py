@@ -5,7 +5,8 @@
 #
 # DEVELOPED WITH:
 # Pycharm 2016.2.3 on Windows 10,
-# Pycharm 2016.2.3 on Windows 7
+# Pycharm 2016.2.3 on Windows 7,
+# Pycharm 2016.3 on Windows 7
 #
 # AUTHORS: Unknown, Logan Warner, Jesse Lieberg
 #
@@ -32,7 +33,7 @@ import NaoMarkModule
 class CustomMotions():
     """A module for all the motions defined by the Senior Design team"""
     def __init__(self, IP_PR="10.0.0.7", PORT_PR=9559):
-        self.naoMarkSize = .12
+        self.naoMarkSize = .15
         self.stepArray = [["StepHeight", 0.015], ["MaxStepX", 0.02],
                           ["MaxStepTheta", .18]]
         self.curAngle = 0
@@ -299,19 +300,24 @@ class CustomMotions():
     #turnToLookAngle
 
     # Non-0 theta is strafing according to old code
-    def moveForward(self, distance, y=0, theta=0):
+    def walkTo(self, x, y=0, theta=0):
         self.motionProxy.moveInit()
         self.motionProxy.setMoveArmsEnabled(True, True)
         time.sleep(1)
-        print "moving x:" + str(distance) + "y " + str(y)
-        self.motionProxy.moveTo(distance, y, theta, self.stepArray)
+        print "Moving to x:{}, y:{}".format(x, y)
+        self.motionProxy.moveTo(x, y, theta)
     #moveForward
 
-    def detectMarkAndMoveTo(self, markNumPR=None, offsetY=0):
+    def detectMarkAndMoveTo(self, markNumPR=None,
+                            stoppingDistancePR=.15, lateralOffsetPR=0):
         markD = CustomMotions.lookAroundForMark(self, markNumPR)
         x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markD,
                                            self.naoMarkSize)
-        CustomMotions.moveForward(self, x - .15, y + offsetY)
+        print "Mark detected at x:{}, y:{}".format(x, y)
+        print "Robot at {}".format(self.motionProxy.getRobotPosition(True))
+        CustomMotions.walkTo(self,
+                             x - stoppingDistancePR,
+                             y + lateralOffsetPR)
     #detectMarkAndMoveTo
 
     def detectMarkWalkStraight(self, markNumPR=None):
