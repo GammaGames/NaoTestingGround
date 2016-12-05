@@ -17,7 +17,6 @@
 # Python imports
 # --------------
 import math
-import time
 
 # -------------------
 # Application imports
@@ -25,7 +24,6 @@ import time
 from naoqi import ALProxy
 
 import NaoMarkModule
-
 
 # -----------------
 # Class and methods
@@ -36,7 +34,6 @@ class CustomMotions():
         self.naoMarkSize = .15
         self.stepArray = [["StepHeight", 0.015], ["MaxStepX", 0.02],
                           ["MaxStepTheta", .18]]
-        self.curAngle = 0
         self.motionProxy = ALProxy("ALMotion", IP_PR, PORT_PR)
         self.motionProxy.setStiffnesses("Body", 1)
         self.motionProxy.\
@@ -137,9 +134,8 @@ class CustomMotions():
     #wave
 
     def turnLeft(self, degreesPR):
-        self.motionProxy.moveInit()
+        self.motionProxy.wakeUp()
         self.motionProxy.setMoveArmsEnabled(True, True)
-        time.sleep(1)
         self.motionProxy.moveTo(0, 0,
                                 math.radians(degreesPR), self.stepArray)
     #turnLeft
@@ -156,8 +152,7 @@ class CustomMotions():
     #turnAround
 
     def lookAround(self):
-        self.motionProxy.moveInit()
-        time.sleep(1)
+        self.motionProxy.wakeUp()
 
         names = "HeadYaw"
         angleLists = [1.0, -1.0, 1.0, -1.0, 0.0]
@@ -167,19 +162,20 @@ class CustomMotions():
                                             times, isAbsolute)
     #lookAround
 
-    def lookTo(self, degreesPR):
-        self.motionProxy.moveInit()
-        time.sleep(1)
-
-        self.motionProxy.setAngles("HeadYaw", math.radians(degreesPR), .1)
+    def lookTo(self, degreesHorizontalPR, degreesVerticalPR=0):
+        self.motionProxy.wakeUp()
+        self.motionProxy.setAngles("HeadYaw",
+                                   math.radians(degreesHorizontalPR), .1)
+        self.motionProxy.setAngles("HeadPitch",
+                                   math.radians(degreesVerticalPR), .1)
     #lookTo
 
     def lookForward(self):
+        self.motionProxy.wakeUp()
         self.lookTo(0)
 
     def lookAroundForMark(self, markNumPR=None):
-        self.motionProxy.moveInit()
-        time.sleep(1)
+        self.motionProxy.wakeUp()
 
         names = "HeadYaw"
         markFound = False
@@ -219,8 +215,7 @@ class CustomMotions():
     #lookAroundForMark
 
     def lookAroundForMarkMoving(self, markNumPR):
-        self.motionProxy.moveInit()
-        time.sleep(1)
+        self.motionProxy.wakeUp()
 
         names = "HeadYaw"
         markFound = False
@@ -287,41 +282,38 @@ class CustomMotions():
             CustomMotions.moveForwardY(self, x, y)
     #detectMarkSearch
 
-    def turnToLookAngle(self):
-        self.motionProxy.moveInit()
-        time.sleep(1)
-        global curAngle
-
-        angle = self.motionProxy.getAngles("HeadYaw", False)
-        print angle[0]
-
-        self.motionProxy.moveTo(0, 0, angle[0])
-        print "Turned to look angle"
-    #turnToLookAngle
-
     # Non-0 theta is strafing according to old code
     def walkTo(self, x, y=0, theta=0):
-        self.motionProxy.moveInit()
+        self.motionProxy.wakeUp()
+        self.motionProxy.setExternalCollisionProtectionEnabled("All", False)
         self.motionProxy.setMoveArmsEnabled(True, True)
-        time.sleep(1)
+        print "Robot at {}".format(self.motionProxy.getRobotPosition(True))
         print "Moving to x:{}, y:{}".format(x, y)
         self.motionProxy.moveTo(x, y, theta)
     #moveForward
 
     def detectMarkAndMoveTo(self, markNumPR=None,
                             stoppingDistancePR=.15, lateralOffsetPR=0):
-        markD = CustomMotions.lookAroundForMark(self, markNumPR)
+        markD = self.lookAroundForMark(markNumPR)
         x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markD,
                                            self.naoMarkSize)
         print "Mark detected at x:{}, y:{}".format(x, y)
-        print "Robot at {}".format(self.motionProxy.getRobotPosition(True))
-        CustomMotions.walkTo(self,
-                             x - stoppingDistancePR,
-                             y + lateralOffsetPR)
+        self.walkTo(x - stoppingDistancePR,
+                    y + lateralOffsetPR)
     #detectMarkAndMoveTo
 
-    def detectMarkWalkStraight(self, markNumPR=None):
-        CustomMotions.turnToLookAngle(self)
-        CustomMotions.detectMarkAndMoveTo(self, markNumPR)
+    # TODO refactor so these can be split up more
+    def detectMarkWalkStraight(self, markNumPR=None,
+                               stoppingDistancePR=.15, lateralOffsetPR=0):
+        markD = CustomMotions.lookAroundForMark(markNumPR)
+        x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markD,
+                                           self.naoMarkSize)
+        print "Mark detected at x:{}, y:{}".format(x, y)
+        verticalAngle, horizontalAngle = NaoMarkModule.getMarkAngles(markD)
+        self.turnLeft(horizontalAngle)
+        self.lookForward()
+        self.walkTo(x - stoppingDistancePR,
+                    y + lateralOffsetPR,
+                    math.degrees(horizontalAngle))
     #detectMarkWalkStraight
 #end CustomMotions.py

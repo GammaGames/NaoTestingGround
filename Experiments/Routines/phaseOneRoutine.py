@@ -10,12 +10,18 @@
 # DESCRIPTION: Phase 1 of the tour demo
 # **************************************************************
 
+# --------------
+# Python imports
+# --------------
+import math
+
 # -------------------
 # Application imports
 # -------------------
 import Routine
 from naoqi import ALProxy
 from CustomMotions import CustomMotions
+import NaoMarkModule
 
 
 class PhaseOneRoutine(Routine.Routine):
@@ -27,7 +33,7 @@ class PhaseOneRoutine(Routine.Routine):
         '''
         Constructor
         '''
-        self.numberSteps = 5
+        self.numberSteps = 8
     # __init__
 
     def connect(self, IP_PR="10.0.0.7", port_PR=9559):
@@ -41,15 +47,15 @@ class PhaseOneRoutine(Routine.Routine):
         self.autonomousLifeProxy.setState("disabled")
         self.running = True
 
-        self.speechProxy.say("Thank you for waking me,"\
-                             " I have a job to do.")
+        self.motions.sitDown()
 
         self.currentStep = 0
 
         if not self.running:
             return
 
-        self.motions.standUp()
+        self.speechProxy.say("Thank you for waking me,"\
+                             " I have a job to do.")
 
         self.currentStep = 1
 
@@ -63,18 +69,50 @@ class PhaseOneRoutine(Routine.Routine):
 
         if not self.running:
             return
-        #TODO make her say "Ah! I see the doorway mark" between detection and movement
-        #and "I can still se the doorway mark and will now walk toward it"
-        self.motions.detectMarkAndMoveTo(107, .6)
+
+        self.motions.lookTo(0, 20)
+        markData = self.motions.lookAroundForMark(107)
 
         self.currentStep = 3
 
         if not self.running:
             return
 
-        self.motions.sitDown()
+        self.speechProxy.say("Ah! I see the doorway mark.")
 
         self.currentStep = 4
+
+        if not self.running:
+            return
+
+        self.motions.standUp()
+
+        self.currentStep = 5
+
+        if not self.running:
+            return
+
+        self.speechProxy.say("I will now walk toward it.")
+
+        self.currentStep = 6
+
+        if not self.running:
+            return
+
+        x, y, z = NaoMarkModule.getMarkXYZ(self.motions.motionProxy,
+                                           markData,
+                                           self.motions.naoMarkSize)
+        verticalAngle, horizontalAngle = NaoMarkModule.getMarkAngles(markData)
+        horizontalAngle = math.degrees(horizontalAngle)
+        print "angle is {}".format(horizontalAngle)
+        self.motions.walkTo(x - .6, y, horizontalAngle)
+
+        self.currentStep = 7
+
+        if not self.running:
+            return
+
+        self.motions.sitDown()
 
         self.running = False
     #run
