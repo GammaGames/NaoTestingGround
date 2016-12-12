@@ -16,10 +16,8 @@ def main():
 
     motions.standUp()
 
-    tts.say("Now where oh where is mark 80?")
-    motions.detectMarkWalkStraight(80)
-    tts.say("Here it is.")
-    tts.say("Now it's time to rest.")
+    tts.say("Hello")
+    motions.wave()
 
     motions.sitDown()
 #main

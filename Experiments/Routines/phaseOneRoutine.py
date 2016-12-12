@@ -70,8 +70,9 @@ class PhaseOneRoutine(Routine.Routine):
         if not self.running:
             return
 
+        # remove  when integrating phases, this is only for while sitting
         self.motions.lookTo(0, 20)
-        markData = self.motions.lookAroundForMark(107)
+        markData = self.motions.lookAroundForMark(80)
 
         self.currentStep = 3
 
@@ -85,7 +86,9 @@ class PhaseOneRoutine(Routine.Routine):
         if not self.running:
             return
 
+        markSeenAngle = self.motions.getLookAngle()
         self.motions.standUp()
+        self.motions.turnLeft(markSeenAngle)
 
         self.currentStep = 5
 
@@ -102,10 +105,7 @@ class PhaseOneRoutine(Routine.Routine):
         x, y, z = NaoMarkModule.getMarkXYZ(self.motions.motionProxy,
                                            markData,
                                            self.motions.naoMarkSize)
-        verticalAngle, horizontalAngle = NaoMarkModule.getMarkAngles(markData)
-        horizontalAngle = math.degrees(horizontalAngle)
-        print "angle is {}".format(horizontalAngle)
-        self.motions.walkTo(x - .6, y, horizontalAngle)
+        self.motions.walkTo(x - .6, y)
 
         self.currentStep = 7
 
