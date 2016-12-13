@@ -33,7 +33,7 @@ class PhaseOneRoutine(Routine.Routine):
         '''
         Constructor
         '''
-        self.numberSteps = 8
+        self.numberSteps = 6
     # __init__
 
     def connect(self, IP_PR="10.0.0.7", port_PR=9559):
@@ -48,30 +48,33 @@ class PhaseOneRoutine(Routine.Routine):
         self.running = True
 
         self.motions.sitDown()
+        self.speechProxy.say("Thank you for waking me,"\
+                             " I have a job to do.")
 
         self.currentStep = 0
 
         if not self.running:
             return
 
-        self.speechProxy.say("Thank you for waking me,"\
-                             " I have a job to do.")
+        self.motions.standUp()
+        self.speechProxy.say("Going to stretch my legs a little to get a feel for the carpet")
 
         self.currentStep = 1
 
         if not self.running:
             return
 
-        self.motions.standUp()
-        self.speechProxy.say("The first thing I must do "\
-                             "is find the mark by the doorway.")
+        self.motions.turnLeft(.2)
+        self.motions.turnRight(.2)
 
         self.currentStep = 2
 
         if not self.running:
             return
 
-        self.motions.lookAroundForMark(80)
+        self.speechProxy.say("Now I need to find the " \
+                             "mark by the doorway.")
+        markData = self.motions.lookAroundForMark(80)
 
         self.currentStep = 3
 
@@ -79,38 +82,17 @@ class PhaseOneRoutine(Routine.Routine):
             return
 
         self.speechProxy.say("Ah! I see the doorway mark.")
+        markSeenAngle = self.motions.getLookAngle()
+        self.motions.turnLeft(math.degrees(markSeenAngle))
 
         self.currentStep = 4
 
         if not self.running:
             return
 
-        markSeenAngle = self.motions.getLookAngle()
-        self.speechProxy.say("I'm turning to face the mark and get closer")
-        self.motions.turnLeft(math.degrees(markSeenAngle))
-        self.motions.walkTo(.5, 0)
+        self.motions.detectMarkWalkStraight(80, .6)
 
         self.currentStep = 5
-
-        if not self.running:
-            return
-
-        markData = self.motions.lookAroundForMark(80)
-        self.speechProxy.say("I see the mark again, and will now walk to it")
-        markSeenAngle = self.motions.getLookAngle()
-        self.motions.turnLeft(math.degrees(markSeenAngle))
-
-        self.currentStep = 6
-
-        if not self.running:
-            return
-
-        x, y, z = NaoMarkModule.getMarkXYZ(self.motions.motionProxy,
-                                           markData,
-                                           self.motions.naoMarkSize)
-        self.motions.walkTo(x - .6, y)
-
-        self.currentStep = 7
 
         if not self.running:
             return

@@ -133,23 +133,22 @@ class CustomMotions():
             self.motionProxy.angleInterpolation(names, keys, times, True)
     #wave
 
-    def turnLeft(self, degreesPR):
+    def turnLeft(self, radiansPR):
         self.motionProxy.wakeUp()
         self.motionProxy.setMoveArmsEnabled(True, True)
-        if degreesPR > 10:
-            self.motionProxy.moveTo(0, 0,
-                                    math.radians(degreesPR))
+        if abs(radiansPR) > .17:
+            self.motionProxy.moveTo(0, 0, radiansPR)
     #turnLeft
 
-    def turnRight(self, degreesPr):
-        self.turnLeft(-degreesPr)
+    def turnRight(self, radiansPr):
+        self.turnLeft(-radiansPr)
     #turnRight
 
     def turnAround(self, directionrPR="left"):
         if directionrPR == "left":
-            self.turnLeft(180)
+            self.turnLeft(math.pi)
         else:
-            self.turnRight(180)
+            self.turnRight(math.pi)
     #turnAround
 
     def lookAround(self):
@@ -163,100 +162,47 @@ class CustomMotions():
                                             times, isAbsolute)
     #lookAround
 
-    def lookTo(self, degreesHorizontalPR, degreesVerticalPR=0):
+    def lookTo(self, radiansHorizontalPR, radiansVerticalPR=0):
         self.motionProxy.wakeUp()
         self.motionProxy.setAngles("HeadYaw",
-                                   math.radians(degreesHorizontalPR), .1)
+                                   radiansHorizontalPR, .1)
         self.motionProxy.setAngles("HeadPitch",
-                                   math.radians(degreesVerticalPR), .1)
+                                   radiansVerticalPR, .1)
     #lookTo
 
     def lookForward(self):
         self.motionProxy.wakeUp()
         self.lookTo(0)
 
-    def lookAroundForMark(self, markNumPR=None):
+    def lookAroundForMark(self, markNumPR, maxAttemptsPR=4):
         self.motionProxy.wakeUp()
 
         names = "HeadYaw"
-        markFound = False
-        headAngle = -.125
+        headAngle = 0
         back = False
-        markData = NaoMarkModule.getMarkData(self.memoryProxy,
-                                             self.landmarkProxy)
-        first = True
+        attempts = 0
+        maxAngle = 1
 
-        while not markFound:
+        markData = None
+        while not attempts >= maxAttemptsPR:
+            markData = NaoMarkModule.getMarkData(self.memoryProxy,
+                                                 self.landmarkProxy)
+            if markData is not None and len(markData) > 0:
+                if markNumPR is None or\
+                   (NaoMarkModule.getMarkNumber(markData) == markNumPR):
+                    break
+
             if back:
-                headAngle -= .125
+                headAngle -= -.125
             else:
                 headAngle += .125
 
-            if abs(headAngle) > 1.0:
-                headAngle = max(min(headAngle, 1), -1)
+            if abs(headAngle) > maxAngle:
+                headAngle = max(min(headAngle, maxAngle), -maxAngle)
                 back = ~back
-
-            times = .15
-            if first:
-                times = 1.0
-            isAbsolute = True
-            self.motionProxy.angleInterpolation(names, headAngle,
-                                                times, isAbsolute)
-
-            markData = NaoMarkModule.getMarkData(self.memoryProxy,
-                                                 self.landmarkProxy)
-
-            if not (markData is None or len(markData) == 0):
-                if markNumPR is None or\
-                        (NaoMarkModule.getMarkNumber(markData) ==
-                             markNumPR):
-                    markFound = True
-            first = False
-        return markData
-    #lookAroundForMark
-
-    def lookAroundForMarkMoving(self, markNumPR):
-        self.motionProxy.wakeUp()
-
-        names = "HeadYaw"
-        markFound = False
-        headAngle = -.125
-        back = False
-        markData = NaoMarkModule.getMarkData(self.memoryProxy,
-                                             self.landmarkProxy)
-        first = True
-        attempts = 0
-
-        while not markFound:
-            # TODO REPLACE THIS NONSENSE
-            if attempts >=4:
-                return None
-            if back:
-                headAngle = headAngle -.125
-            else:
-                headAngle = headAngle + .125
-
-            if abs(headAngle) > 1.0:
-                headAngle = max(min(headAngle, 1), -1)
-                back = ~back
-                attempts = attempts + 1
-
-            times = .15
-            if first:
-                times = 1.0
-            isAbsolute = True
-            self.motionProxy.angleInterpolation(names, headAngle, times,
-                                           isAbsolute)
-
-            markData = NaoMarkModule.getMarkData(self.memoryProxy,
-                                                 self.landmarkProxy)
-
-            if not (markData is None or len(markData) == 0):
-                if markNumPR is None or\
-                        (NaoMarkModule.getMarkNumber(markData) ==
-                             markNumPR):
-                    markFound = True
-            first = False
+                attempts += 1
+            self.motionProxy.angleInterpolation(names, headAngle, .5, True)
+        #while not reached maximum attempts
         return markData
     #lookAroundForMarkMoving
 
@@ -312,8 +258,8 @@ class CustomMotions():
     # TODO refactor so these can be split up more
     def detectMarkWalkStraight(self, markNumPR=None,
                                stoppingDistancePR=.25, lateralOffsetPR=0):
-        markD = self.lookAroundForMark(markNumPR)
-        x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markD,
+        markData = self.lookAroundForMark(markNumPR)
+        x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markData,
                                            self.naoMarkSize)
         print "Mark detected at x:{}, y:{}".format(x, y)
         self.turnToLookAngle()
