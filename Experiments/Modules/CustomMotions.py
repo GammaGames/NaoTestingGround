@@ -185,7 +185,9 @@ class CustomMotions():
         while not attempts >= maxAttemptsPR:
             markData = NaoMarkModule.getMarkData(self.memoryProxy,
                                                  self.landmarkProxy)
-            if markData is not None and len(markData) > 0:
+            if len(markData) == 0:
+                markData = None
+            if markData is not None:
                 if markNumPR is None or\
                    (NaoMarkModule.getMarkNumber(markData) == markNumPR):
                     break
@@ -222,16 +224,17 @@ class CustomMotions():
     def detectMarkAndMoveTo(self, markNumPR=None,
                             stoppingDistancePR=.25, lateralOffsetPR=0,
                             walkStraightPR=True):
-        markD = self.lookAroundForMark(markNumPR)
-        if len(markD) > 0:
-            x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markD,
-                                               self.naoMarkSize)
-            print "Mark detected at x:{}, y:{} meters from NAO position".format(x, y)
-            if walkStraightPR:
-                self.turnToLookAngle()
-            self.walkTo(x - stoppingDistancePR,
-                        y + lateralOffsetPR)
-        else:
+        markData = self.lookAroundForMark(markNumPR)
+        if markData is None:
             print "Mark not found!"
+            return False
+        x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markData,
+                                           self.naoMarkSize)
+        print "Mark detected at x:{}, y:{} meters from NAO position".format(x, y)
+        if walkStraightPR:
+            self.turnToLookAngle()
+        self.walkTo(x - stoppingDistancePR,
+                    y + lateralOffsetPR)
+        return True
     #detectMarkAndMoveTo
 #end CustomMotions.py

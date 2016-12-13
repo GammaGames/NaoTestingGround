@@ -74,7 +74,11 @@ class PhaseOneRoutine(Routine.Routine):
 
         self.speechProxy.say("Now I need to find the " \
                              "mark by the doorway.")
-        markData = self.motions.lookAroundForMark(80)
+        if not self.motions.lookAroundForMark(80):
+            self.speechProxy.say("I couldn't find the mark.")
+            self.motions.sitDown()
+            self.running = False
+            return
 
         self.currentStep = 3
 
