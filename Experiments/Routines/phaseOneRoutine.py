@@ -43,7 +43,8 @@ class PhaseOneRoutine(Routine.Routine):
 
     def connect(self, IP_PR="10.0.0.7", port_PR=9559):
         self.speechProxy = ALProxy("ALTextToSpeech", IP_PR, port_PR)
-        self.autonomousLifeProxy = ALProxy("ALAutonomousLife", IP_PR, port_PR)
+        self.autonomousLifeProxy = ALProxy("ALAutonomousLife",
+                                           IP_PR, port_PR)
         # IP and port overridden in case they change
         self.motions = CustomMotions(IP_PR, port_PR)
     #connect
