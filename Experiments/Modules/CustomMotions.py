@@ -193,7 +193,7 @@ class CustomMotions():
                     break
 
             if back:
-                headAngle -= -.125
+                headAngle -= .125
             else:
                 headAngle += .125
 
