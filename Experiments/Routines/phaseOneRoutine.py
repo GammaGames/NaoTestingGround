@@ -26,7 +26,6 @@ import sys
 import Routine
 from naoqi import ALProxy
 from CustomMotions import CustomMotions
-import NaoMarkModule
 
 
 class PhaseOneRoutine(Routine.Routine):
@@ -38,7 +37,7 @@ class PhaseOneRoutine(Routine.Routine):
         '''
         Constructor
         '''
-        self.numberSteps = 6
+        self.numberSteps = 5
     # __init__
 
     def connect(self, IP_PR="10.0.0.7", port_PR=9559):
@@ -92,16 +91,10 @@ class PhaseOneRoutine(Routine.Routine):
         self.speechProxy.say("Ah! I see the doorway mark.")
         markSeenAngle = self.motions.getLookAngle()
         self.motions.turnLeft(markSeenAngle)
-
-        self.currentStep = 4
-
-        if not self.running:
-            return
-
         if not self.motions.detectMarkAndMoveTo(80, .6):
             self.fail()
 
-        self.currentStep = 5
+        self.currentStep = 4
 
         if not self.running:
             return
