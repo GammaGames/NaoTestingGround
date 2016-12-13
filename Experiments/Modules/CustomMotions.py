@@ -31,7 +31,7 @@ import NaoMarkModule
 class CustomMotions():
     """A module for all the motions defined by the Senior Design team"""
     def __init__(self, IP_PR="10.0.0.7", PORT_PR=9559):
-        self.naoMarkSize = .15
+        self.naoMarkSize = .12
         self.stepArray = [["StepHeight", 0.015], ["MaxStepX", 0.02],
                           ["MaxStepTheta", .18]]
         self.motionProxy = ALProxy("ALMotion", IP_PR, PORT_PR)
@@ -136,8 +136,9 @@ class CustomMotions():
     def turnLeft(self, degreesPR):
         self.motionProxy.wakeUp()
         self.motionProxy.setMoveArmsEnabled(True, True)
-        self.motionProxy.moveTo(0, 0,
-                                math.radians(degreesPR), self.stepArray)
+        if degreesPR > 10:
+            self.motionProxy.moveTo(0, 0,
+                                    math.radians(degreesPR))
     #turnLeft
 
     def turnRight(self, degreesPr):
