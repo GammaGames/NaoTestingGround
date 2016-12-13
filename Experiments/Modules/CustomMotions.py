@@ -203,14 +203,16 @@ class CustomMotions():
                 headAngle = max(min(headAngle, maxAngle), -maxAngle)
                 back = ~back
                 attempts += 1
-            self.motionProxy.angleInterpolation("HeadYaw", headAngle, .75, True)
+            self.motionProxy.angleInterpolation("HeadYaw", headAngle,
+                                                .75, True)
         #while not reached maximum attempts
         return markData
     #lookAroundForMark
 
     def walkTo(self, x, y=0, theta=0):
         self.motionProxy.wakeUp()
-        self.motionProxy.setExternalCollisionProtectionEnabled("All", False)
+        self.motionProxy.setExternalCollisionProtectionEnabled("All",
+                                                               False)
         self.motionProxy.setMoveArmsEnabled(True, True)
         print "Moving to x:{}, y:{} meters from NAO position".format(x, y)
         self.motionProxy.moveTo(x, y, theta, self.stepArray)
@@ -238,7 +240,8 @@ class CustomMotions():
                 self.turnToLookAngle()
         x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markData,
                                            self.naoMarkSize)
-        print "Mark detected at x:{}, y:{} meters from NAO position".format(x, y)
+        print "Mark detected at x:{}, y:{} meters from NAO position"\
+              .format(x, y)
         self.walkTo(x - stoppingDistancePR,
                     y + lateralOffsetPR)
         return True
