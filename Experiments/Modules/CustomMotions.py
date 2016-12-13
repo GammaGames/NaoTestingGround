@@ -179,7 +179,7 @@ class CustomMotions():
 
         names = "HeadYaw"
         markFound = False
-        headAngle = .25
+        headAngle = -.125
         back = False
         markData = NaoMarkModule.getMarkData(self.memoryProxy,
                                              self.landmarkProxy)
@@ -219,7 +219,7 @@ class CustomMotions():
 
         names = "HeadYaw"
         markFound = False
-        headAngle = .25
+        headAngle = -.125
         back = False
         markData = NaoMarkModule.getMarkData(self.memoryProxy,
                                              self.landmarkProxy)

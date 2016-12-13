@@ -62,6 +62,7 @@ class PhaseOneRoutine(Routine.Routine):
         if not self.running:
             return
 
+        self.motions.standUp()
         self.speechProxy.say("The first thing I must do "\
                              "is find the mark by the doorway.")
 
@@ -70,9 +71,7 @@ class PhaseOneRoutine(Routine.Routine):
         if not self.running:
             return
 
-        # remove  when integrating phases, this is only for while sitting
-        self.motions.lookTo(0, 20)
-        markData = self.motions.lookAroundForMark(80)
+        self.motions.lookAroundForMark(80)
 
         self.currentStep = 3
 
@@ -87,15 +86,19 @@ class PhaseOneRoutine(Routine.Routine):
             return
 
         markSeenAngle = self.motions.getLookAngle()
-        self.motions.standUp()
-        self.motions.turnLeft(markSeenAngle)
+        self.speechProxy.say("I'm turning to face the mark and get closer")
+        self.motions.turnLeft(math.degrees(markSeenAngle))
+        self.motions.walkTo(.5, 0)
 
         self.currentStep = 5
 
         if not self.running:
             return
 
-        self.speechProxy.say("I will now walk toward it.")
+        markData = self.motions.lookAroundForMark(80)
+        self.speechProxy.say("I see the mark again, and will now walk to it")
+        markSeenAngle = self.motions.getLookAngle()
+        self.motions.turnLeft(math.degrees(markSeenAngle))
 
         self.currentStep = 6
 
