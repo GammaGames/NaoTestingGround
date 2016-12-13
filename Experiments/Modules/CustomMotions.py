@@ -137,7 +137,7 @@ class CustomMotions():
         self.motionProxy.wakeUp()
         self.motionProxy.setMoveArmsEnabled(True, True)
         if abs(radiansPR) > .17:
-            self.motionProxy.moveTo(0, 0, radiansPR)
+            self.motionProxy.moveTo(0, 0, radiansPR, self.stepArray)
     #turnLeft
 
     def turnRight(self, radiansPr):
@@ -180,7 +180,8 @@ class CustomMotions():
         headAngle = 0
         back = False
         attempts = 0
-        maxAngle = 1
+        incrementAngle = math.pi/12
+        maxAngle = math.pi/2
         markData = None
         while not attempts >= maxAttemptsPR:
             markData = NaoMarkModule.getMarkData(self.memoryProxy,
@@ -193,9 +194,9 @@ class CustomMotions():
                     break
 
             if back:
-                headAngle -= .125
+                headAngle -= incrementAngle
             else:
-                headAngle += .125
+                headAngle += incrementAngle
 
             if abs(headAngle) > maxAngle:
                 headAngle = max(min(headAngle, maxAngle), -maxAngle)
@@ -212,7 +213,7 @@ class CustomMotions():
         self.motionProxy.setExternalCollisionProtectionEnabled("All", False)
         self.motionProxy.setMoveArmsEnabled(True, True)
         print "Moving to x:{}, y:{} meters from NAO position".format(x, y)
-        self.motionProxy.moveTo(x, y, theta)
+        self.motionProxy.moveTo(x, y, theta, self.stepArray)
     #moveForward
 
     def getLookAngle(self):
@@ -228,11 +229,14 @@ class CustomMotions():
         if markData is None:
             print "Mark not found!"
             return False
+
+        if walkStraightPR:
+            while abs(self.getLookAngle()) > .12:
+                markData = self.lookAroundForMark(markNumPR)
+                self.turnToLookAngle()
         x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markData,
                                            self.naoMarkSize)
         print "Mark detected at x:{}, y:{} meters from NAO position".format(x, y)
-        if walkStraightPR:
-            self.turnToLookAngle()
         self.walkTo(x - stoppingDistancePR,
                     y + lateralOffsetPR)
         return True

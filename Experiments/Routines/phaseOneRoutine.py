@@ -14,6 +14,7 @@
 # Python imports
 # --------------
 import math
+import sys
 
 # -------------------
 # Application imports
@@ -75,10 +76,7 @@ class PhaseOneRoutine(Routine.Routine):
         self.speechProxy.say("Now I need to find the " \
                              "mark by the doorway.")
         if not self.motions.lookAroundForMark(80):
-            self.speechProxy.say("I couldn't find the mark.")
-            self.motions.sitDown()
-            self.running = False
-            return
+            self.fail()
 
         self.currentStep = 3
 
@@ -87,14 +85,15 @@ class PhaseOneRoutine(Routine.Routine):
 
         self.speechProxy.say("Ah! I see the doorway mark.")
         markSeenAngle = self.motions.getLookAngle()
-        self.motions.turnLeft(math.degrees(markSeenAngle))
+        self.motions.turnLeft(markSeenAngle)
 
         self.currentStep = 4
 
         if not self.running:
             return
 
-        self.motions.detectMarkAndMoveTo(80, .6)
+        if not self.motions.detectMarkAndMoveTo(80, .6):
+            self.fail()
 
         self.currentStep = 5
 
@@ -105,6 +104,12 @@ class PhaseOneRoutine(Routine.Routine):
 
         self.running = False
     #run
+
+    def fail(self):
+        self.speechProxy.say("I couldn't find the mark.")
+        self.motions.sitDown()
+        self.running = False
+        sys.exit()
 
 #end PhaseOneRoutine.py
 
