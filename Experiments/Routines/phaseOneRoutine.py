@@ -1,9 +1,13 @@
 # *************************************************************
 # PROJECT: ShowRobbie2
 #
-# EXECUTION ENVIRONMENTS: Python 2.7 on Windows 10
+# EXECUTION ENVIRONMENTS:
+# Python 2.7 on Windows 10,
+# Python 2.7 on Windows 7
 #
-# DEVELOPED WITH: PyCharm Community 2016.3 on Windows 7
+# DEVELOPED WITH:
+# PyCharm Community 2016.3 on Windows 7
+# GitHub webapp text editor
 #
 # AUTHORS: Logan Warner
 #
@@ -27,7 +31,7 @@ import NaoMarkModule
 
 class PhaseOneRoutine(Routine.Routine):
     '''
-    classdocs
+    Tour demo phase 1
     '''
 
     def __init__(self):
@@ -58,7 +62,8 @@ class PhaseOneRoutine(Routine.Routine):
             return
 
         self.motions.standUp()
-        self.speechProxy.say("Going to stretch my legs a little to get a feel for the carpet")
+        self.speechProxy.say("Going to stretch my legs a little"\
+                             "to get a feel for the carpet")
 
         self.currentStep = 1
 
@@ -110,7 +115,7 @@ class PhaseOneRoutine(Routine.Routine):
         self.motions.sitDown()
         self.running = False
         sys.exit()
-
+    #fail
 #end PhaseOneRoutine.py
 
 demo = PhaseOneRoutine()
