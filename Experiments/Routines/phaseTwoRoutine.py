@@ -2,16 +2,14 @@
 # PROJECT: ShowRobbie2
 #
 # EXECUTION ENVIRONMENTS:
-# Python 2.7 on Windows 10,
 # Python 2.7 on Windows 7
 #
 # DEVELOPED WITH:
 # PyCharm Community 2016.3 on Windows 7
-# GitHub webapp text editor
 #
 # AUTHORS: Logan Warner
 #
-# DESCRIPTION: Phase 1 of the tour demo
+# DESCRIPTION: Phase 2 of the tour demo
 # **************************************************************
 
 # --------------
@@ -26,12 +24,11 @@ import sys
 import Routine
 from naoqi import ALProxy
 from CustomMotions import CustomMotions
-import NaoMarkModule
 
 
-class PhaseOneRoutine(Routine.Routine):
+class PhaseTwoRoutine(Routine.Routine):
     '''
-    Tour demo phase 1
+    Tour demo phase 2
     '''
 
     def __init__(self):
@@ -54,8 +51,6 @@ class PhaseOneRoutine(Routine.Routine):
         self.running = True
 
         self.motions.sitDown()
-        self.speechProxy.say("Thank you for waking me,"\
-                             " I have a job to do.")
 
         self.currentStep = 0
 
@@ -63,6 +58,7 @@ class PhaseOneRoutine(Routine.Routine):
             return
 
         self.motions.standUp()
+        # Remove for integrating
         self.speechProxy.say("Going to stretch my legs a little"\
                              " to get a feel for the carpet")
 
@@ -79,9 +75,8 @@ class PhaseOneRoutine(Routine.Routine):
         if not self.running:
             return
 
-        self.speechProxy.say("Now I need to find the " \
-                             "mark by the doorway.")
-        if not self.motions.lookAroundForMark(80):
+        self.speechProxy.say("I must now find the mark on the railing.")
+        if not self.motions.lookAroundForMark(107):
             self.fail()
 
         self.currentStep = 3
@@ -89,7 +84,7 @@ class PhaseOneRoutine(Routine.Routine):
         if not self.running:
             return
 
-        self.speechProxy.say("Ah! I see the doorway mark.")
+        self.speechProxy.say("Ah! I see the railing mark.")
         markSeenAngle = self.motions.getLookAngle()
         self.motions.turnLeft(markSeenAngle)
 
@@ -98,7 +93,7 @@ class PhaseOneRoutine(Routine.Routine):
         if not self.running:
             return
 
-        if not self.motions.detectMarkAndMoveTo(80, .6):
+        if not self.motions.detectMarkAndMoveTo(107, 1):
             self.fail()
 
         self.currentStep = 5
@@ -117,8 +112,8 @@ class PhaseOneRoutine(Routine.Routine):
         self.running = False
         sys.exit()
     #fail
-#end PhaseOneRoutine.py
+#end PhaseTwoRoutine.py
 
-demo = PhaseOneRoutine()
+demo = PhaseTwoRoutine()
 demo.connect()
 demo.run()
