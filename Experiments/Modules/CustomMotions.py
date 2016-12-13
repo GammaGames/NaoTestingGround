@@ -6,7 +6,8 @@
 # DEVELOPED WITH:
 # Pycharm 2016.2.3 on Windows 10,
 # Pycharm 2016.2.3 on Windows 7,
-# Pycharm 2016.3 on Windows 7
+# Pycharm 2016.3 on Windows 7,
+# Github webapp text editor
 #
 # AUTHORS: Unknown, Logan Warner, Jesse Lieberg
 #
@@ -22,7 +23,6 @@ import math
 # Application imports
 # -------------------
 from naoqi import ALProxy
-
 import NaoMarkModule
 
 # -----------------
@@ -173,6 +173,7 @@ class CustomMotions():
     def lookForward(self):
         self.motionProxy.wakeUp()
         self.lookTo(0)
+    #lookForward
 
     def lookAroundForMark(self, markNumPR, maxAttemptsPR=4):
         self.motionProxy.wakeUp()
@@ -207,7 +208,6 @@ class CustomMotions():
         return markData
     #lookAroundForMark
 
-    # Non-0 theta is strafing according to old code
     def walkTo(self, x, y=0, theta=0):
         self.motionProxy.wakeUp()
         self.motionProxy.setExternalCollisionProtectionEnabled("All", False)
@@ -218,9 +218,11 @@ class CustomMotions():
 
     def getLookAngle(self):
         return self.motionProxy.getAngles("HeadYaw", True)[0]
+    #getLookAngle
 
     def turnToLookAngle(self):
         self.turnLeft(self.getLookAngle())
+    #turnToLookAngle
 
     def detectMarkAndMoveTo(self, markNumPR=None,
                             stoppingDistancePR=.25, lateralOffsetPR=0,
