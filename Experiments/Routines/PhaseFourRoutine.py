@@ -9,7 +9,7 @@
 #
 # AUTHORS: Logan Warner
 #
-# DESCRIPTION: Phase 2 of the tour demo
+# DESCRIPTION: Phase 1 and 2 of the tour demo
 # **************************************************************
 
 # --------------
@@ -25,9 +25,9 @@ from naoqi import ALProxy
 from CustomMotions import CustomMotions
 
 
-class PhaseTwoRoutine(Routine.Routine):
+class PhaseFourRoutine(Routine.Routine):
     '''
-    Tour demo phase 2
+    Tour demo phase 1 and 2
     '''
 
     def __init__(self):
@@ -50,6 +50,7 @@ class PhaseTwoRoutine(Routine.Routine):
         self.running = True
 
         self.motions.sitDown()
+        self.speechProxy.say("I've got to go back now.")
 
         self.currentStep = 0
 
@@ -57,7 +58,6 @@ class PhaseTwoRoutine(Routine.Routine):
             return
 
         self.motions.standUp()
-        # Remove for integrating
         self.speechProxy.say("Going to stretch my legs a little"\
                              " to get a feel for the carpet")
 
@@ -74,8 +74,9 @@ class PhaseTwoRoutine(Routine.Routine):
         if not self.running:
             return
 
-        self.speechProxy.say("I must now find the mark on the railing.")
-        if not self.motions.lookAroundForMark(107):
+        self.motions.turnAround()
+        self.speechProxy.say("I must now find the mark to get back into the office.")
+        if not self.motions.lookAroundForMark(64):
             self.fail()
 
         self.currentStep = 3
@@ -83,10 +84,10 @@ class PhaseTwoRoutine(Routine.Routine):
         if not self.running:
             return
 
-        self.speechProxy.say("Ah! I see the railing mark.")
+        self.speechProxy.say("Ah! I see it.")
         markSeenAngle = self.motions.getLookAngle()
         self.motions.turnLeft(markSeenAngle)
-        if not self.motions.detectMarkAndMoveTo(107, 1):
+        if not self.motions.detectMarkAndMoveTo(64, .2):
             self.fail()
 
         self.currentStep = 4
@@ -105,8 +106,8 @@ class PhaseTwoRoutine(Routine.Routine):
         self.running = False
         sys.exit()
     #fail
-#end PhaseTwoRoutine.py
+#end PhaseFourRoutine.py
 
-demo = PhaseTwoRoutine()
+demo = PhaseFourRoutine()
 demo.connect()
 demo.run()

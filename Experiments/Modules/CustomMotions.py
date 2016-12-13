@@ -135,6 +135,8 @@ class CustomMotions():
 
     def turnLeft(self, radiansPR):
         self.motionProxy.wakeUp()
+        self.motionProxy.\
+            setExternalCollisionProtectionEnabled("All", False)
         self.motionProxy.setMoveArmsEnabled(True, True)
         if abs(radiansPR) > .17:
             self.motionProxy.moveTo(0, 0, radiansPR, self.stepArray)
@@ -175,7 +177,7 @@ class CustomMotions():
         self.lookTo(0)
     #lookForward
 
-    def lookAroundForMark(self, markNumPR, maxAttemptsPR=4):
+    def lookAroundForMark(self, markNumPR=None, maxAttemptsPR=4):
         self.motionProxy.wakeUp()
 
         headAngle = 0
@@ -204,7 +206,7 @@ class CustomMotions():
                 back = ~back
                 attempts += 1
             self.motionProxy.angleInterpolation("HeadYaw", headAngle,
-                                                .75, True)
+                                                attempts+1*.5, True)
         #while not reached maximum attempts
         return markData
     #lookAroundForMark

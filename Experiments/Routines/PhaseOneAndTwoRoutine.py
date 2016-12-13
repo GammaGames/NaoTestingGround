@@ -15,7 +15,6 @@
 # --------------
 # Python imports
 # --------------
-import math
 import sys
 
 # -------------------
