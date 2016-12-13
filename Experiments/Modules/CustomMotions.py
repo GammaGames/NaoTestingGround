@@ -187,7 +187,7 @@ class CustomMotions():
         while not attempts >= maxAttemptsPR:
             markData = NaoMarkModule.getMarkData(self.memoryProxy,
                                                  self.landmarkProxy)
-            if len(markData) == 0:
+            if not markData or len(markData) == 0:
                 markData = None
             if markData is not None:
                 if markNumPR is None or\
@@ -235,7 +235,7 @@ class CustomMotions():
             return False
 
         if walkStraightPR:
-            while abs(self.getLookAngle()) > .12:
+            while abs(self.getLookAngle()) > math.pi/12:
                 markData = self.lookAroundForMark(markNumPR)
                 self.turnToLookAngle()
         x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markData,
