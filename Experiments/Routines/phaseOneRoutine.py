@@ -90,7 +90,7 @@ class PhaseOneRoutine(Routine.Routine):
         if not self.running:
             return
 
-        self.motions.detectMarkWalkStraight(80, .6)
+        self.motions.detectMarkAndMoveTo(80, .6)
 
         self.currentStep = 5
 

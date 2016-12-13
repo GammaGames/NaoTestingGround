@@ -177,12 +177,10 @@ class CustomMotions():
     def lookAroundForMark(self, markNumPR, maxAttemptsPR=4):
         self.motionProxy.wakeUp()
 
-        names = "HeadYaw"
         headAngle = 0
         back = False
         attempts = 0
         maxAngle = 1
-
         markData = None
         while not attempts >= maxAttemptsPR:
             markData = NaoMarkModule.getMarkData(self.memoryProxy,
@@ -201,53 +199,19 @@ class CustomMotions():
                 headAngle = max(min(headAngle, maxAngle), -maxAngle)
                 back = ~back
                 attempts += 1
-            self.motionProxy.angleInterpolation(names, headAngle, .5, True)
+            self.motionProxy.angleInterpolation("HeadYaw", headAngle, .75, True)
         #while not reached maximum attempts
         return markData
-    #lookAroundForMarkMoving
-
-    def detectMarkSearch(self, number, directionPR="forward"):
-        markD = None
-        searching = True
-        while searching:
-            markD = CustomMotions.lookAroundForMarkMoving(self, number)
-            if not (markD is None or len(markD) == 0):
-                 print "found something"
-                 searching = False
-            else:
-                print "tried turn"
-                CustomMotions.turnRight30(self)
-
-        x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markD,
-                                           self.naoMarkSize)
-
-        if directionPR == "l":
-            CustomMotions.moveForwardY(self, x, y + .35)
-        elif directionPR == "s":
-            CustomMotions.moveForwardY(self, x, y - .35)
-        else:
-            CustomMotions.moveForwardY(self, x, y)
-    #detectMarkSearch
+    #lookAroundForMark
 
     # Non-0 theta is strafing according to old code
     def walkTo(self, x, y=0, theta=0):
         self.motionProxy.wakeUp()
         self.motionProxy.setExternalCollisionProtectionEnabled("All", False)
         self.motionProxy.setMoveArmsEnabled(True, True)
-        print "Robot at {}".format(self.motionProxy.getRobotPosition(True))
-        print "Moving to x:{}, y:{}".format(x, y)
+        print "Moving to x:{}, y:{} meters from NAO position".format(x, y)
         self.motionProxy.moveTo(x, y, theta)
     #moveForward
-
-    def detectMarkAndMoveTo(self, markNumPR=None,
-                            stoppingDistancePR=.25, lateralOffsetPR=0):
-        markD = self.lookAroundForMark(markNumPR)
-        x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markD,
-                                           self.naoMarkSize)
-        print "Mark detected at x:{}, y:{}".format(x, y)
-        self.walkTo(x - stoppingDistancePR,
-                    y + lateralOffsetPR)
-    #detectMarkAndMoveTo
 
     def getLookAngle(self):
         return self.motionProxy.getAngles("HeadYaw", True)[0]
@@ -255,15 +219,19 @@ class CustomMotions():
     def turnToLookAngle(self):
         self.turnLeft(self.getLookAngle())
 
-    # TODO refactor so these can be split up more
-    def detectMarkWalkStraight(self, markNumPR=None,
-                               stoppingDistancePR=.25, lateralOffsetPR=0):
-        markData = self.lookAroundForMark(markNumPR)
-        x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markData,
-                                           self.naoMarkSize)
-        print "Mark detected at x:{}, y:{}".format(x, y)
-        self.turnToLookAngle()
-        self.walkTo(x - stoppingDistancePR,
-                    y + lateralOffsetPR)
-    #detectMarkWalkStraight
+    def detectMarkAndMoveTo(self, markNumPR=None,
+                            stoppingDistancePR=.25, lateralOffsetPR=0,
+                            walkStraightPR=True):
+        markD = self.lookAroundForMark(markNumPR)
+        if len(markD) > 0:
+            x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markD,
+                                               self.naoMarkSize)
+            print "Mark detected at x:{}, y:{} meters from NAO position".format(x, y)
+            if walkStraightPR:
+                self.turnToLookAngle()
+            self.walkTo(x - stoppingDistancePR,
+                        y + lateralOffsetPR)
+        else:
+            print "Mark not found!"
+    #detectMarkAndMoveTo
 #end CustomMotions.py
