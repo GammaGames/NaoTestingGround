@@ -104,9 +104,10 @@ class TourDemoRoutine(Routine.Routine):
         if not self.running:
             return
 
-        if not self.motions.lookAroundForMark(80):
+        if not self.motions.lookAroundForMark(114):
             self.fail()
         self.speechProxy.say("I've seen it. Time to welcome our visitors.")
+        self.motions.turnToLookAngle()
         time.sleep(1)
 
         self.currentStep += 1
@@ -115,8 +116,10 @@ class TourDemoRoutine(Routine.Routine):
             return
 
         self.motions.wave(True)
-        self.speechProxy.say("Hello, I'm Robbie. I'm a NAO robot." \
-                             "I'm designed and manufactured by the" \
+        self.speechProxy.say("Hello, I'm Robbie. I'm a NAO robot.")
+        self.motions.lookForward()
+        self.motions.lookUp(-math.pi/8)
+        self.speechProxy.say("I'm designed and manufactured by the" \
                              " Aldebaran company in France, but all" \
                              " of my present behaviors have been" \
                              " programmed as part of a Senior" \
@@ -153,7 +156,7 @@ class TourDemoRoutine(Routine.Routine):
         self.speechProxy.say("Unfortunately, I can't stay with you longer " \
                              "as I must return to my post. Have a nice day.")
 
-        self.speechProxy.say("I've got to go back now.")
+        self.motions.lookForward()
         self.motions.turnAround()
 
         self.currentStep += 1
@@ -193,7 +196,7 @@ class TourDemoRoutine(Routine.Routine):
         self.speechProxy.say("Ah! I see the mark.")
         markSeenAngle = self.motions.getLookAngle()
         self.motions.turnLeft(markSeenAngle)
-        if not self.motions.detectMarkAndMoveTo(68, .2):
+        if not self.motions.detectMarkAndMoveTo(68, .15):
             self.fail()
 
         self.currentStep += 1

@@ -164,7 +164,7 @@ class CustomMotions():
                                             times, isAbsolute)
     #lookAround
 
-    def lookTo(self, radiansHorizontalPR, radiansVerticalPR=0):
+    def lookTo(self, radiansHorizontalPR=0, radiansVerticalPR=0):
         self.motionProxy.wakeUp()
         self.motionProxy.setAngles("HeadYaw",
                                    radiansHorizontalPR, .1)
@@ -173,12 +173,15 @@ class CustomMotions():
     #lookTo
 
     def lookForward(self):
-        self.motionProxy.wakeUp()
-        self.lookTo(0)
+        self.lookTo()
     #lookForward
 
+    def lookUp(self, radiansPR):
+        self.lookTo(self.getLookAngle(), -radiansPR)
+    #lookUp
+
     def lookAroundForMark(self, markNumPR=None, maxAttemptsPR=4):
-        self.motionProxy.wakeUp()
+        self.lookForward()
 
         headAngle = 0
         back = False
