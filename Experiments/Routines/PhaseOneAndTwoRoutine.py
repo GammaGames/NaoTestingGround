@@ -27,7 +27,7 @@ from CustomMotions import CustomMotions
 
 class PhaseOneAndTwoRoutine(Routine.Routine):
     '''
-    Tour demo phase 1 and 2
+    Tour demo phases 1 and 2
     '''
 
     def __init__(self):

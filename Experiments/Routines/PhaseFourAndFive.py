@@ -9,7 +9,7 @@
 #
 # AUTHORS: Logan Warner
 #
-# DESCRIPTION: Phase 1 and 2 of the tour demo
+# DESCRIPTION: Phase 4 and 5 of the tour demo
 # **************************************************************
 
 # --------------
@@ -28,7 +28,7 @@ from CustomMotions import CustomMotions
 
 class PhaseFourRoutine(Routine.Routine):
     '''
-    Tour demo phase 1 and 2
+    Tour demo phases 4 and 5
     '''
 
     def __init__(self):
