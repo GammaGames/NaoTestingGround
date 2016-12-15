@@ -224,7 +224,7 @@ class ShowRobbieGui(object):
         self.routine.connect(self.ipVar.get(), self.portVar.get())
         print ("running " + script)
         self.routineThread = threading.Thread(target = self.routine.run)
-        self.routineThread.start()  
+        self.routineThread.start()
         
         t = threading.Thread(target = self.updateUi)
         t.start()
@@ -250,8 +250,12 @@ class ShowRobbieGui(object):
     #def updateImage
     
     def updateBattery(self):
-        self.batteryVar = self.batteryProxy.getBatteryPercentage()
+        if self.connected:
+            self.batteryVar = self.batteryProxy.getBatteryPercentage()
+        else:
+            self.batteryVar = 0
         self.batteryBar["value"] = self.batteryVar
+        self.batteryLabel['text'] = "{}%".format(self.batteryVar)
     #def updateBattery
     
     def updateConnect(self):
