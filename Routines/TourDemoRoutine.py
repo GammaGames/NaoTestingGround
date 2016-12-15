@@ -16,16 +16,14 @@
 # --------------
 # Python imports
 # --------------
+import math
 import sys
 import time
-import math
 
-# -------------------
-# Application imports
-# -------------------
-import Routine
-from naoqi import ALProxy
 from CustomMotions import CustomMotions
+from naoqi import ALProxy
+
+from NaoTestingGround import Routine
 
 
 class TourDemoRoutine(Routine.Routine):

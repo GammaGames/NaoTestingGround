@@ -9,7 +9,7 @@
 #
 # AUTHORS: Logan Warner
 #
-# DESCRIPTION: Phase 4 of the tour demo
+# DESCRIPTION: Phase 4 and 5 of the tour demo
 # **************************************************************
 
 # --------------
@@ -17,24 +17,22 @@
 # --------------
 import sys
 
-# -------------------
-# Application imports
-# -------------------
-import Routine
-from naoqi import ALProxy
 from CustomMotions import CustomMotions
+from naoqi import ALProxy
+
+from NaoTestingGround import Routine
 
 
 class PhaseFourRoutine(Routine.Routine):
     '''
-    Tour demo phase 4
+    Tour demo phases 4 and 5
     '''
 
     def __init__(self):
         '''
         Constructor
         '''
-        self.numberSteps = 5
+        self.numberSteps = 7
         self.currentStep = 0
     # __init__
 
@@ -85,13 +83,33 @@ class PhaseFourRoutine(Routine.Routine):
         markSeenAngle = self.motions.getLookAngle()
         self.motions.turnLeft(markSeenAngle)
         if not self.motions.detectMarkAndMoveTo(
-                64, stoppingDistancePR=.2):
+                64, stoppingDistancePR=.35):
             self.fail()
 
         self.currentStep += 1
         if not self.running:
             return
 
+        self.speechProxy.say("I will now return to my post. Mark 68 marks it.")
+        if not self.motions.lookAroundForMark(68):
+            self.fail()
+
+        self.currentStep += 1
+        if not self.running:
+            return
+
+        self.speechProxy.say("Ah! I see the mark.")
+        markSeenAngle = self.motions.getLookAngle()
+        self.motions.turnLeft(markSeenAngle)
+        if not self.motions.detectMarkAndMoveTo(
+                68, stoppingDistancePR=.2):
+            self.fail()
+
+        self.currentStep += 1
+        if not self.running:
+            return
+
+        self.motions.turnAround()
         self.motions.sitDown()
 
         self.running = False

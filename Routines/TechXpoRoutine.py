@@ -17,12 +17,10 @@
 # --------------
 import time
 
-# -------------------
-# Application imports
-# -------------------
-import Routine
-from naoqi import ALProxy
 from CustomMotions import CustomMotions
+from naoqi import ALProxy
+
+from NaoTestingGround import Routine
 
 
 class TechXpoRoutine(Routine.Routine):

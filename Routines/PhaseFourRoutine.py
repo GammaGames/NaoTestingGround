@@ -9,7 +9,7 @@
 #
 # AUTHORS: Logan Warner
 #
-# DESCRIPTION: Phase 1 and 2 of the tour demo
+# DESCRIPTION: Phase 4 of the tour demo
 # **************************************************************
 
 # --------------
@@ -17,24 +17,22 @@
 # --------------
 import sys
 
-# -------------------
-# Application imports
-# -------------------
-import Routine
-from naoqi import ALProxy
 from CustomMotions import CustomMotions
+from naoqi import ALProxy
+
+from NaoTestingGround import Routine
 
 
-class PhaseOneAndTwoRoutine(Routine.Routine):
+class PhaseFourRoutine(Routine.Routine):
     '''
-    Tour demo phases 1 and 2
+    Tour demo phase 4
     '''
 
     def __init__(self):
         '''
         Constructor
         '''
-        self.numberSteps = 8
+        self.numberSteps = 5
         self.currentStep = 0
     # __init__
 
@@ -51,8 +49,7 @@ class PhaseOneAndTwoRoutine(Routine.Routine):
         self.running = True
 
         self.motions.sitDown()
-        self.speechProxy.say("Thank you for waking me,"\
-                             " I have a job to do.")
+        self.speechProxy.say("I've got to go back now.")
 
         self.currentStep += 1
         if not self.running:
@@ -73,33 +70,20 @@ class PhaseOneAndTwoRoutine(Routine.Routine):
         if not self.running:
             return
 
-        #self.speechProxy.say("Ah! I see the doorway mark.")
-        #markSeenAngle = self.motions.getLookAngle()
-        #self.motions.turnLeft(markSeenAngle)
-
-        self.currentStep += 1
-        if not self.running:
-            return
-
-        #if not self.motions.detectMarkAndMoveTo(80, .6):
-        #    self.fail()
-
-        self.currentStep += 1
-        if not self.running:
-            return
-
-        self.speechProxy.say("I must now find the mark on the railing.")
-        if not self.motions.lookAroundForMark(107):
+        self.motions.turnAround()
+        self.speechProxy.say("I must now find the mark to get back into the office.")
+        if not self.motions.lookAroundForMark(64):
             self.fail()
 
         self.currentStep += 1
         if not self.running:
             return
 
-        self.speechProxy.say("Ah! I see the railing mark.")
+        self.speechProxy.say("Ah! I see it.")
         markSeenAngle = self.motions.getLookAngle()
         self.motions.turnLeft(markSeenAngle)
-        if not self.motions.detectMarkAndMoveTo(107, 1):
+        if not self.motions.detectMarkAndMoveTo(
+                64, stoppingDistancePR=.2):
             self.fail()
 
         self.currentStep += 1
@@ -117,8 +101,8 @@ class PhaseOneAndTwoRoutine(Routine.Routine):
         self.running = False
         sys.exit()
     #fail
-#end PhaseOneAndTwoRoutine.py
+#end PhaseFourRoutine.py
 
-demo = PhaseOneAndTwoRoutine()
+demo = PhaseFourRoutine()
 demo.connect()
 demo.run()

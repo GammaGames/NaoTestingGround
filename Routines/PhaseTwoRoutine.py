@@ -9,7 +9,7 @@
 #
 # AUTHORS: Logan Warner
 #
-# DESCRIPTION: Phase 5 of the tour demo
+# DESCRIPTION: Phase 2 of the tour demo
 # **************************************************************
 
 # --------------
@@ -17,17 +17,15 @@
 # --------------
 import sys
 
-# -------------------
-# Application imports
-# -------------------
-import Routine
-from naoqi import ALProxy
 from CustomMotions import CustomMotions
+from naoqi import ALProxy
+
+from NaoTestingGround import Routine
 
 
-class PhaseFiveRoutine(Routine.Routine):
+class PhaseTwoRoutine(Routine.Routine):
     '''
-    Tour demo phase 5
+    Tour demo phase 2
     '''
 
     def __init__(self):
@@ -51,13 +49,13 @@ class PhaseFiveRoutine(Routine.Routine):
         self.running = True
 
         self.motions.sitDown()
-        self.speechProxy.say("I will now return to my post.")
 
         self.currentStep += 1
         if not self.running:
             return
 
         self.motions.standUp()
+        # Remove for integrating
         self.speechProxy.say("Going to stretch my legs a little"\
                              " to get a feel for the carpet")
 
@@ -68,30 +66,31 @@ class PhaseFiveRoutine(Routine.Routine):
         self.motions.turnLeft(.2)
         self.motions.turnRight(.2)
 
-        self.currentStep += 1
+        self.currentStep = 2
+
         if not self.running:
             return
 
-        self.speechProxy.say("I must now find the mark that marks my post.")
-        if not self.motions.lookAroundForMark(68):
+        self.speechProxy.say("I must now find the mark on the railing.")
+        if not self.motions.lookAroundForMark(107):
             self.fail()
 
-        self.currentStep += 1
+        self.currentStep = 3
+
         if not self.running:
             return
 
-        self.speechProxy.say("Ah! I see the mark.")
+        self.speechProxy.say("Ah! I see the railing mark.")
         markSeenAngle = self.motions.getLookAngle()
         self.motions.turnLeft(markSeenAngle)
         if not self.motions.detectMarkAndMoveTo(
-                68, stoppingDistancePR=.2):
+                107, stoppingDistancePR=1):
             self.fail()
 
         self.currentStep += 1
         if not self.running:
             return
 
-        self.motions.turnAround()
         self.motions.sitDown()
 
         self.running = False
@@ -103,8 +102,8 @@ class PhaseFiveRoutine(Routine.Routine):
         self.running = False
         sys.exit()
     #fail
-#end PhaseFiveRoutine.py
+#end PhaseTwoRoutine.py
 
-demo = PhaseFiveRoutine()
+demo = PhaseTwoRoutine()
 demo.connect()
 demo.run()
