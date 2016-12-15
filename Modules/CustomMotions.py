@@ -19,10 +19,8 @@
 # --------------
 import math
 
-# -------------------
-# Application imports
-# -------------------
 from naoqi import ALProxy
+
 import NaoMarkModule
 
 # -----------------
