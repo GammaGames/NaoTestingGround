@@ -21,7 +21,6 @@
 import os
 import glob
 import threading
-import multiprocessing
 import imp
 import time
 
@@ -217,22 +216,23 @@ class ShowRobbieGui(object):
     
     def clickPlay(self):
         script = self.availableRoutines.get(ACTIVE)
-        print ("constructing " + script)
+        print ("constructing " + script)      
         src = imp.load_source("Routines", "Routines/" + script + ".py")
         class_ = getattr(src, script)
-        self.routine = class_()
+        self.routine = class_()        
+        print ("connecting")
+        self.routine.connect(self.ipVar.get(), self.portVar.get())
         print ("running " + script)
-        multiprocessing.log_to_stderr(multiprocessing.SUBDEBUG)
-
-        self.routine.start()
-
+        self.routineThread = threading.Thread(target = self.routine.run)
+        self.routineThread.start()
+        
         t = threading.Thread(target = self.updateUi)
         t.start()
     #def clickPlay
     
     def clickStop(self):
-        self.routine.terminate()
-        self.routine.join()
+        self.routineThread = None
+        self.routine.stop()
         self.routine = None
         self.progressBar["value"] = 0.0
         t = threading.Thread(target = self.updateUi)
@@ -300,6 +300,4 @@ class ShowRobbieGui(object):
 
 #class showRobbieGui
 
-if __name__ == '__main__':
-    multiprocessing.freeze_support()
-    c = ShowRobbieGui()
+c = ShowRobbieGui()
