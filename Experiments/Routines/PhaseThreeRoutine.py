@@ -37,21 +37,7 @@ class PhaseThreeRoutine(Routine.Routine):
         Constructor
         '''
         self.numberSteps = 7
-    # __init__
-
-    def connect(self, IP_PR="10.0.0.7", port_PR=9559):
-        self.speechProxy = ALProxy("ALTextToSpeech", IP_PR, port_PR)
-        self.autonomousLifeProxy = ALProxy("ALAutonomousLife",
-                                           IP_PR, port_PR)
-        # IP and port overridden in case they change
-        self.motions = CustomMotions(IP_PR, port_PR)
-    #connect
-
-    def __init__(self):
-        '''
-        Constructor
-        '''
-        self.numberSteps = 6
+        self.currentStep = 0
     # __init__
 
     def connect(self, IP_PR="10.0.0.7", port_PR=9559):
@@ -68,8 +54,7 @@ class PhaseThreeRoutine(Routine.Routine):
 
         self.motions.sitDown()
 
-        self.currentStep = 0
-
+        self.currentStep += 1
         if not self.running:
             return
 
@@ -77,18 +62,17 @@ class PhaseThreeRoutine(Routine.Routine):
         self.speechProxy.say("I'm looking for the student guide"\
                              " carrying mark 114.")
 
-        self.currentStep = 1
-
+        self.currentStep += 1
         if not self.running:
             return
 
-        if not self.motions.lookAroundForMark(80):
+        if not self.motions.lookAroundForMark(
+                114, maxAttemptsPR=float('inf')):
             self.fail()
         self.speechProxy.say("I've seen it. Time to welcome our visitors.")
         time.sleep(1)
 
-        self.currentStep = 2
-
+        self.currentStep += 1
         if not self.running:
             return
 
@@ -101,8 +85,7 @@ class PhaseThreeRoutine(Routine.Routine):
                              " Software Engineering project.")
         time.sleep(1)
 
-        self.currentStep = 3
-
+        self.currentStep += 1
         if not self.running:
             return
 
@@ -114,8 +97,7 @@ class PhaseThreeRoutine(Routine.Routine):
                              " complex problems.")
         time.sleep(1)
 
-        self.currentStep = 4
-
+        self.currentStep += 1
         if not self.running:
             return
 
@@ -123,8 +105,7 @@ class PhaseThreeRoutine(Routine.Routine):
                              "informative visit here at Montana Tech.")
         time.sleep(1)
 
-        self.currentStep = 5
-
+        self.currentStep += 1
         if not self.running:
             return
 

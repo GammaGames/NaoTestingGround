@@ -35,6 +35,7 @@ class PhaseOneAndTwoRoutine(Routine.Routine):
         Constructor
         '''
         self.numberSteps = 8
+        self.currentStep = 0
     # __init__
 
     def connect(self, IP_PR="10.0.0.7", port_PR=9559):
@@ -53,8 +54,7 @@ class PhaseOneAndTwoRoutine(Routine.Routine):
         self.speechProxy.say("Thank you for waking me,"\
                              " I have a job to do.")
 
-        self.currentStep = 0
-
+        self.currentStep += 1
         if not self.running:
             return
 
@@ -62,26 +62,14 @@ class PhaseOneAndTwoRoutine(Routine.Routine):
         self.speechProxy.say("Going to stretch my legs a little"\
                              " to get a feel for the carpet")
 
-        self.currentStep = 1
-
+        self.currentStep += 1
         if not self.running:
             return
 
         self.motions.turnLeft(.2)
         self.motions.turnRight(.2)
 
-        self.currentStep = 2
-
-        if not self.running:
-            return
-
-        #self.speechProxy.say("Now I need to find the " \
-        #                     "mark by the doorway.")
-        #if not self.motions.lookAroundForMark(80):
-        #    self.fail()
-
-        self.currentStep = 3
-
+        self.currentStep += 1
         if not self.running:
             return
 
@@ -89,16 +77,14 @@ class PhaseOneAndTwoRoutine(Routine.Routine):
         #markSeenAngle = self.motions.getLookAngle()
         #self.motions.turnLeft(markSeenAngle)
 
-        self.currentStep = 4
-
+        self.currentStep += 1
         if not self.running:
             return
 
         #if not self.motions.detectMarkAndMoveTo(80, .6):
         #    self.fail()
 
-        self.currentStep = 5
-
+        self.currentStep += 1
         if not self.running:
             return
 
@@ -106,8 +92,7 @@ class PhaseOneAndTwoRoutine(Routine.Routine):
         if not self.motions.lookAroundForMark(107):
             self.fail()
 
-        self.currentStep = 6
-
+        self.currentStep += 1
         if not self.running:
             return
 
@@ -117,8 +102,7 @@ class PhaseOneAndTwoRoutine(Routine.Routine):
         if not self.motions.detectMarkAndMoveTo(107, 1):
             self.fail()
 
-        self.currentStep = 7
-
+        self.currentStep += 1
         if not self.running:
             return
 

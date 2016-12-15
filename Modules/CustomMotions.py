@@ -187,6 +187,7 @@ class CustomMotions():
         incrementAngle = math.pi/12
         maxAngle = math.pi/2
         markData = None
+        turnSpeed = .75
         while not attempts >= maxAttemptsPR:
             markData = NaoMarkModule.getMarkData(self.memoryProxy,
                                                  self.landmarkProxy)
@@ -197,17 +198,19 @@ class CustomMotions():
                    (NaoMarkModule.getMarkNumber(markData) == markNumPR):
                     break
 
+            if abs(headAngle) >= maxAngle:
+                headAngle = max(min(headAngle, maxAngle), -maxAngle)
+                back = ~back
+                attempts += 1
+
             if back:
                 headAngle -= incrementAngle
             else:
                 headAngle += incrementAngle
 
-            if abs(headAngle) > maxAngle:
-                headAngle = max(min(headAngle, maxAngle), -maxAngle)
-                back = ~back
-                attempts += 1
             self.motionProxy.angleInterpolation("HeadYaw", headAngle,
-                                                attempts+1*.5, True)
+                                                turnSpeed, True)
+            turnSpeed = 1
         #while not reached maximum attempts
         return markData
     #lookAroundForMark
@@ -229,7 +232,7 @@ class CustomMotions():
         self.turnLeft(self.getLookAngle())
     #turnToLookAngle
 
-    def detectMarkAndMoveTo(self, markNumPR=None,
+    def detectMarkAndMoveTo(self, markNumPR=None, maxAttemptsPR=4,
                             stoppingDistancePR=.25, lateralOffsetPR=0,
                             walkStraightPR=True):
         markData = self.lookAroundForMark(markNumPR)
@@ -239,7 +242,7 @@ class CustomMotions():
 
         if walkStraightPR:
             while abs(self.getLookAngle()) > math.pi/12:
-                markData = self.lookAroundForMark(markNumPR)
+                markData = self.lookAroundForMark(markNumPR, maxAttemptsPR)
                 self.turnToLookAngle()
         x, y, z = NaoMarkModule.getMarkXYZ(self.motionProxy, markData,
                                            self.naoMarkSize)

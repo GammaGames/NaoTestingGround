@@ -58,7 +58,6 @@ class TourDemoRoutine(Routine.Routine):
                              " I have a job to do.")
 
         self.currentStep += 1
-
         if not self.running:
             return
 
@@ -67,7 +66,6 @@ class TourDemoRoutine(Routine.Routine):
                              " to get a feel for the carpet")
 
         self.currentStep += 1
-
         if not self.running:
             return
 
@@ -81,32 +79,29 @@ class TourDemoRoutine(Routine.Routine):
             self.fail()
 
         self.currentStep += 1
-
         if not self.running:
             return
 
         self.speechProxy.say("Ah! I see the railing mark.")
         markSeenAngle = self.motions.getLookAngle()
         self.motions.turnLeft(markSeenAngle)
-        if not self.motions.detectMarkAndMoveTo(107, 1):
+        if not self.motions.detectMarkAndMoveTo(
+                107, stoppingDistancePR=1):
             self.fail()
 
         self.currentStep += 1
-
         if not self.running:
             return
 
-
-        self.motions.standUp()
         self.speechProxy.say("I'm looking for the mark carried by the"
                              "student guide.")
 
         self.currentStep += 1
-
         if not self.running:
             return
 
-        if not self.motions.lookAroundForMark(114):
+        if not self.motions.lookAroundForMark(
+                114, maxAttemptsPR=float("inf")):
             self.fail()
         self.speechProxy.say("There's the student guide."
                              "Time to welcome our visitors.")
@@ -114,7 +109,6 @@ class TourDemoRoutine(Routine.Routine):
         time.sleep(1)
 
         self.currentStep += 1
-
         if not self.running:
             return
 
@@ -127,7 +121,6 @@ class TourDemoRoutine(Routine.Routine):
         time.sleep(1)
 
         self.currentStep += 1
-
         if not self.running:
             return
 
@@ -141,7 +134,6 @@ class TourDemoRoutine(Routine.Routine):
         time.sleep(1)
 
         self.currentStep += 1
-
         if not self.running:
             return
 
@@ -150,7 +142,6 @@ class TourDemoRoutine(Routine.Routine):
         time.sleep(1)
 
         self.currentStep += 1
-
         if not self.running:
             return
 
@@ -161,7 +152,6 @@ class TourDemoRoutine(Routine.Routine):
         self.motions.turnAround()
 
         self.currentStep += 1
-
         if not self.running:
             return
 
@@ -171,18 +161,17 @@ class TourDemoRoutine(Routine.Routine):
             self.fail()
 
         self.currentStep += 1
-
         if not self.running:
             return
 
         self.speechProxy.say("Ah! There it is.")
         markSeenAngle = self.motions.getLookAngle()
         self.motions.turnLeft(markSeenAngle)
-        if not self.motions.detectMarkAndMoveTo(64, .35):
+        if not self.motions.detectMarkAndMoveTo(
+                64, stoppingDistancePR=.35):
             self.fail()
 
         self.currentStep += 1
-
         if not self.running:
             return
 
@@ -192,18 +181,17 @@ class TourDemoRoutine(Routine.Routine):
             self.fail()
 
         self.currentStep += 1
-
         if not self.running:
             return
 
         self.speechProxy.say("Ah! I see the mark.")
         markSeenAngle = self.motions.getLookAngle()
         self.motions.turnLeft(markSeenAngle)
-        if not self.motions.detectMarkAndMoveTo(68, .15):
+        if not self.motions.detectMarkAndMoveTo(
+                68, stoppingDistancePR=.15):
             self.fail()
 
         self.currentStep += 1
-
         if not self.running:
             return
 

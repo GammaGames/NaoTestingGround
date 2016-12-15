@@ -35,6 +35,7 @@ class PhaseFiveRoutine(Routine.Routine):
         Constructor
         '''
         self.numberSteps = 5
+        self.currentStep = 0
     # __init__
 
     def connect(self, IP_PR="10.0.0.7", port_PR=9559):
@@ -52,8 +53,7 @@ class PhaseFiveRoutine(Routine.Routine):
         self.motions.sitDown()
         self.speechProxy.say("I will now return to my post.")
 
-        self.currentStep = 0
-
+        self.currentStep += 1
         if not self.running:
             return
 
@@ -61,37 +61,33 @@ class PhaseFiveRoutine(Routine.Routine):
         self.speechProxy.say("Going to stretch my legs a little"\
                              " to get a feel for the carpet")
 
-        self.currentStep = 1
-
+        self.currentStep += 1
         if not self.running:
             return
 
         self.motions.turnLeft(.2)
         self.motions.turnRight(.2)
 
-        self.currentStep = 2
-
+        self.currentStep += 1
         if not self.running:
             return
-
 
         self.speechProxy.say("I must now find the mark that marks my post.")
         if not self.motions.lookAroundForMark(68):
             self.fail()
 
-        self.currentStep = 3
-
+        self.currentStep += 1
         if not self.running:
             return
 
         self.speechProxy.say("Ah! I see the mark.")
         markSeenAngle = self.motions.getLookAngle()
         self.motions.turnLeft(markSeenAngle)
-        if not self.motions.detectMarkAndMoveTo(68, .2):
+        if not self.motions.detectMarkAndMoveTo(
+                68, stoppingDistancePR=.2):
             self.fail()
 
-        self.currentStep = 4
-
+        self.currentStep += 1
         if not self.running:
             return
 
