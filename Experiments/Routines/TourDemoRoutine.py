@@ -6,6 +6,7 @@
 #
 # DEVELOPED WITH:
 # PyCharm Community 2016.3 on Windows 7
+# PyCharm Community 2016.3 on Manjaro Linux
 #
 # AUTHORS: Logan Warner
 #
@@ -36,7 +37,8 @@ class TourDemoRoutine(Routine.Routine):
         '''
         Constructor
         '''
-        self.numberSteps = 14
+        self.numberSteps = 15
+        self.currentStep = 0
     # __init__
 
     def connect(self, IP_PR="10.0.0.7", port_PR=9559):
@@ -52,16 +54,16 @@ class TourDemoRoutine(Routine.Routine):
         self.running = True
 
         self.motions.sitDown()
-        self.speechProxy.say("Thank you for waking me,"\
+        self.speechProxy.say("Thank you for waking me,"
                              " I have a job to do.")
 
-        self.currentStep = 0
+        self.currentStep += 1
 
         if not self.running:
             return
 
         self.motions.standUp()
-        self.speechProxy.say("Going to stretch my legs a little"\
+        self.speechProxy.say("Going to stretch my legs a little"
                              " to get a feel for the carpet")
 
         self.currentStep += 1
@@ -96,8 +98,8 @@ class TourDemoRoutine(Routine.Routine):
 
 
         self.motions.standUp()
-        self.speechProxy.say("I'm looking for the student guide" \
-                             " carrying mark 114.")
+        self.speechProxy.say("I'm looking for the mark carried by the"
+                             "student guide.")
 
         self.currentStep += 1
 
@@ -106,7 +108,8 @@ class TourDemoRoutine(Routine.Routine):
 
         if not self.motions.lookAroundForMark(114):
             self.fail()
-        self.speechProxy.say("I've seen it. Time to welcome our visitors.")
+        self.speechProxy.say("There's the student guide."
+                             "Time to welcome our visitors.")
         self.motions.turnToLookAngle()
         time.sleep(1)
 
@@ -118,12 +121,9 @@ class TourDemoRoutine(Routine.Routine):
         self.motions.wave(True)
         self.speechProxy.say("Hello, I'm Robbie. I'm a NAO robot.")
         self.motions.lookForward()
-        self.motions.lookUp(-math.pi/8)
-        self.speechProxy.say("I'm designed and manufactured by the" \
-                             " Aldebaran company in France, but all" \
-                             " of my present behaviors have been" \
-                             " programmed as part of a Senior" \
-                             " Software Engineering project.")
+        self.motions.lookUp(-math.pi/7)
+        self.speechProxy.say("I was designed and manufactured by the"
+                             " Japanese company SoftBank.")
         time.sleep(1)
 
         self.currentStep += 1
@@ -131,11 +131,12 @@ class TourDemoRoutine(Routine.Routine):
         if not self.running:
             return
 
-        self.speechProxy.say("There's very little I can do without the" \
-                             " programs made by the students here at" \
-                             " Montana Tech; programming me is not easy," \
-                             " but these students have been well-equipped" \
-                             " by their education here to deal with" \
+        self.speechProxy.say("While I came with built-in behaviors,"
+                             " there's very little I can do without the"
+                             " programs made by the students here at"
+                             " Montana Tech; programming me is not easy,"
+                             " but these students have been well-equipped"
+                             " by their education here to deal with"
                              " complex problems.")
         time.sleep(1)
 
@@ -144,7 +145,7 @@ class TourDemoRoutine(Routine.Routine):
         if not self.running:
             return
 
-        self.speechProxy.say("I hope you have a pleasant and " \
+        self.speechProxy.say("I hope you have a pleasant and "
                              "informative visit here at Montana Tech.")
         time.sleep(1)
 
@@ -153,8 +154,8 @@ class TourDemoRoutine(Routine.Routine):
         if not self.running:
             return
 
-        self.speechProxy.say("Unfortunately, I can't stay with you longer " \
-                             "as I must return to my post. Have a nice day.")
+        self.speechProxy.say("Now I must return to my post."
+                             "Have a nice day.")
 
         self.motions.lookForward()
         self.motions.turnAround()
@@ -164,7 +165,8 @@ class TourDemoRoutine(Routine.Routine):
         if not self.running:
             return
 
-        self.speechProxy.say("I must now find the mark to get back into the office.")
+        self.speechProxy.say("I'm looking for the mark on the shelves"
+                             " to get back into the office.")
         if not self.motions.lookAroundForMark(64):
             self.fail()
 
@@ -173,7 +175,7 @@ class TourDemoRoutine(Routine.Routine):
         if not self.running:
             return
 
-        self.speechProxy.say("Ah! I see it.")
+        self.speechProxy.say("Ah! There it is.")
         markSeenAngle = self.motions.getLookAngle()
         self.motions.turnLeft(markSeenAngle)
         if not self.motions.detectMarkAndMoveTo(64, .35):
@@ -184,7 +186,8 @@ class TourDemoRoutine(Routine.Routine):
         if not self.running:
             return
 
-        self.speechProxy.say("I will now return to my post. Mark 68 marks it.")
+        self.speechProxy.say("I will now return to my post,"
+                             " using the mark on the water jug.")
         if not self.motions.lookAroundForMark(68):
             self.fail()
 
