@@ -94,7 +94,7 @@ class TourDemoRoutine(Routine.Routine):
             return
 
         self.speechProxy.say("I'm looking for the mark carried by the"
-                             "student guide.")
+                             " student guide.")
 
         self.currentStep += 1
         if not self.running:
@@ -103,8 +103,9 @@ class TourDemoRoutine(Routine.Routine):
         if not self.motions.lookAroundForMark(
                 114, maxAttemptsPR=float("inf")):
             self.fail()
-        self.speechProxy.say("There's the student guide."
-                             "Time to welcome our visitors.")
+        self.speechProxy.say("There's the student guide.")
+        time.sleep(0.25)
+        self.speechProxy.say("Time to welcome our visitors.")
         self.motions.turnToLookAngle()
         time.sleep(1)
 
@@ -128,25 +129,25 @@ class TourDemoRoutine(Routine.Routine):
                              " there's very little I can do without the"
                              " programs made by the students here at"
                              " Montana Tech; programming me is not easy,"
-                             " but these students have been well-equipped"
-                             " by their education here to deal with"
-                             " complex problems.")
+                             " but these students have been taught to"
+                             " deal with complex problems.")
         time.sleep(1)
 
         self.currentStep += 1
         if not self.running:
             return
 
-        self.speechProxy.say("I hope you have a pleasant and "
-                             "informative visit here at Montana Tech.")
+        self.speechProxy.say("I hope you have a pleasant and"
+                             " informative visit here at Montana Tech.")
         time.sleep(1)
 
         self.currentStep += 1
         if not self.running:
             return
 
-        self.speechProxy.say("Now I must return to my post."
-                             "Have a nice day.")
+        self.speechProxy.say("Now I must return to my post.")
+        time.sleep(0.25)
+        self.speechProxy.say("Have a nice day.")
 
         self.motions.lookForward()
         self.motions.turnAround()
@@ -175,7 +176,7 @@ class TourDemoRoutine(Routine.Routine):
         if not self.running:
             return
 
-        self.speechProxy.say("I will now return to my post,"
+        self.speechProxy.say("I will now return to my post"
                              " using the mark on the water jug.")
         if not self.motions.lookAroundForMark(68):
             self.fail()

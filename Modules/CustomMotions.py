@@ -187,7 +187,7 @@ class CustomMotions():
         incrementAngle = math.pi/12
         maxAngle = math.pi/2
         markData = None
-        turnSpeed = .75
+        turnSpeed = .9
         while not attempts >= maxAttemptsPR:
             markData = NaoMarkModule.getMarkData(self.memoryProxy,
                                                  self.landmarkProxy)
