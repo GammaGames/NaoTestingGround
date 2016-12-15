@@ -16,14 +16,17 @@
 # Python imports
 # --------------
 import time
+from multiprocessing import Process
 
+# -------------------
+# Application imports
+# -------------------
 from CustomMotions import CustomMotions
 from naoqi import ALProxy
-
 from NaoTestingGround import Routine
 
 
-class TechXpoRoutine(Routine.Routine):
+class TechXpoRoutine(Routine.Routine, Process):
     '''
     classdocs
     '''
@@ -32,20 +35,24 @@ class TechXpoRoutine(Routine.Routine):
         '''
         Constructor
         '''
+        Process.__init__(self)
+        print "TechXpo routine initializing"
         self.numberSteps = 6
         self.currentStep = 0
     #__init__
 
-    def connect(self, IP_PR="10.0.0.7", port_PR=9559):
+    def connect(self, IP_PR, port_PR):
+        print "TechXpo routine connecting"
         self.speechProxy = ALProxy("ALTextToSpeech", IP_PR, port_PR)
         self.autonomousLifeProxy = ALProxy("ALAutonomousLife",
                                            IP_PR, port_PR)
-        # IP and port overridden in case they change
         self.motions = CustomMotions(IP_PR, port_PR)
     #connect
 
-    def run(self):
+    def run(self, IP_PR="10.0.0.7", port_PR=9559):
+        print "TechXpo routine running"
         self.running = True
+        self.connect(IP_PR, port_PR)
 
         try:
             self.autonomousLifeProxy.setState("solitary")
@@ -55,44 +62,34 @@ class TechXpoRoutine(Routine.Routine):
             pass
         self.motions.standUp()
 
-        if not self.running:
-            return
         self.currentStep += 1
 
         self.motions.wave(async=True)
         self.speechProxy.say("Hi there, I'm Robbie. I was built by the Aldebaran company in France.")
         self.speechProxy.say("I am the property of the Montana Tech Computer Science Department.")
-            
-        if not self.running:
-            return
+
         self.currentStep += 1
 
-        self.speechProxy.say("This demonstration is a much shorter version"\
-                             " of a performance for tours for prospective"\
+        self.speechProxy.say("This demonstration is a much shorter version"
+                             " of a performance for tours for prospective"
                              " students.")
         time.sleep(.5)
 
-        if not self.running:
-            return
         self.currentStep += 1
 
-        self.speechProxy.say("The performance is programmed"\
-                             " by the 2016-17 senior software engineering"\
-                             " design project team, consisting of"\
+        self.speechProxy.say("The performance is programmed"
+                             " by the 2016-17 senior software engineering"
+                             " design project team, consisting of"
                              " Jesse Lieberg and Logan Warner.")
         time.sleep(.5)
 
-        if not self.running:
-            return
         self.currentStep += 1
 
-        self.speechProxy.say("One of them can show you some pictures of"\
-                             "it after I sit back down. I hope you enjoy"\
-                             " this year's Tekxpo,"\
+        self.speechProxy.say("One of them can show you some pictures of"
+                             "it after I sit back down. I hope you enjoy"
+                             " this year's Tekxpo,"
                              " thank you for listening.")
-        
-        if not self.running:
-            return
+
         self.currentStep += 1
 
         self.motions.sitDown()
