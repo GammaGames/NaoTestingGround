@@ -7,6 +7,7 @@
 #
 # DEVELOPED WITH:
 # PyCharm Community 2016.3 on Windows 7
+# PyCharm Community 2016.3.1 on Windows 7
 # GitHub webapp text editor
 #
 # AUTHORS: Logan Warner
@@ -34,7 +35,7 @@ class PhaseOneRoutine(Routine.Routine):
         '''
         Constructor
         '''
-        self.numberSteps = 5
+        self.numberSteps = 6
         self.currentStep = 0
     # __init__
 
@@ -47,40 +48,40 @@ class PhaseOneRoutine(Routine.Routine):
     #connect
 
     def run(self):
-        self.autonomousLifeProxy.setState("disabled")
         self.running = True
+        self.autonomousLifeProxy.setState("disabled")
 
         self.motions.sitDown()
         self.speechProxy.say("Thank you for waking me,"\
                              " I have a job to do.")
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.motions.standUp()
         self.speechProxy.say("Going to stretch my legs a little"\
                              " to get a feel for the carpet")
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.motions.turnLeft(.2)
         self.motions.turnRight(.2)
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.speechProxy.say("Now I need to find the " \
                              "mark by the doorway.")
         if not self.motions.lookAroundForMark(80):
             self.fail()
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.speechProxy.say("Ah! I see the doorway mark.")
         markSeenAngle = self.motions.getLookAngle()
@@ -89,11 +90,13 @@ class PhaseOneRoutine(Routine.Routine):
                 80, stoppingDistancePR=.6):
             self.fail()
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.motions.sitDown()
+
+        self.currentStep += 1
 
         self.running = False
     #run
@@ -105,7 +108,3 @@ class PhaseOneRoutine(Routine.Routine):
         sys.exit()
     #fail
 #end PhaseOneRoutine.py
-
-demo = PhaseOneRoutine()
-demo.connect()
-demo.run()

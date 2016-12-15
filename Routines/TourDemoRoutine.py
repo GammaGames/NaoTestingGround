@@ -35,7 +35,7 @@ class TourDemoRoutine(Routine.Routine):
         '''
         Constructor
         '''
-        self.numberSteps = 15
+        self.numberSteps = 19
         self.currentStep = 0
     # __init__
 
@@ -48,24 +48,24 @@ class TourDemoRoutine(Routine.Routine):
     #connect
 
     def run(self):
-        self.autonomousLifeProxy.setState("disabled")
         self.running = True
+        self.autonomousLifeProxy.setState("disabled")
 
         self.motions.sitDown()
         self.speechProxy.say("Thank you for waking me,"
                              " I have a job to do.")
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.motions.standUp()
         self.speechProxy.say("Going to stretch my legs a little"
                              " to get a feel for the carpet")
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.motions.turnLeft(.2)
         self.motions.turnRight(.2)
@@ -76,9 +76,9 @@ class TourDemoRoutine(Routine.Routine):
         if not self.motions.lookAroundForMark(107):
             self.fail()
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.speechProxy.say("Ah! I see the railing mark.")
         markSeenAngle = self.motions.getLookAngle()
@@ -87,16 +87,16 @@ class TourDemoRoutine(Routine.Routine):
                 107, stoppingDistancePR=1):
             self.fail()
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.speechProxy.say("I'm looking for the mark carried by the"
                              " student guide.")
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         if not self.motions.lookAroundForMark(
                 114, maxAttemptsPR=float("inf")):
@@ -107,9 +107,9 @@ class TourDemoRoutine(Routine.Routine):
         self.motions.turnToLookAngle()
         time.sleep(1)
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.motions.wave(True)
         self.speechProxy.say("Hello, I'm Robbie. I'm a NAO robot.")
@@ -119,9 +119,9 @@ class TourDemoRoutine(Routine.Routine):
                              " Japanese company SoftBank.")
         time.sleep(1)
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.speechProxy.say("While I came with built-in behaviors,"
                              " there's very little I can do without the"
@@ -131,17 +131,17 @@ class TourDemoRoutine(Routine.Routine):
                              " deal with complex problems.")
         time.sleep(1)
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.speechProxy.say("I hope you have a pleasant and"
                              " informative visit here at Montana Tech.")
         time.sleep(1)
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.speechProxy.say("Now I must return to my post.")
         time.sleep(0.25)
@@ -150,18 +150,23 @@ class TourDemoRoutine(Routine.Routine):
         self.motions.lookForward()
         self.motions.turnAround()
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.speechProxy.say("I'm looking for the mark on the shelves"
                              " to get back into the office.")
+
+        if not self.running:
+            return
+        self.currentStep += 1
+
         if not self.motions.lookAroundForMark(64):
             self.fail()
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.speechProxy.say("Ah! There it is.")
         markSeenAngle = self.motions.getLookAngle()
@@ -170,18 +175,23 @@ class TourDemoRoutine(Routine.Routine):
                 64, stoppingDistancePR=.35):
             self.fail()
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.speechProxy.say("I will now return to my post"
                              " using the mark on the water jug.")
+
+        if not self.running:
+            return
+        self.currentStep += 1
+
         if not self.motions.lookAroundForMark(68):
             self.fail()
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.speechProxy.say("Ah! I see the mark.")
         markSeenAngle = self.motions.getLookAngle()
@@ -190,12 +200,19 @@ class TourDemoRoutine(Routine.Routine):
                 68, stoppingDistancePR=.15):
             self.fail()
 
-        self.currentStep += 1
         if not self.running:
             return
+        self.currentStep += 1
 
         self.motions.turnAround()
+
+        if not self.running:
+            return
+        self.currentStep += 1
+
         self.motions.sitDown()
+
+        self.currentStep += 1
 
         self.running = False
     #run
@@ -207,7 +224,3 @@ class TourDemoRoutine(Routine.Routine):
         sys.exit()
     #fail
 #end TourDemoRoutine.py
-
-demo = TourDemoRoutine()
-demo.connect()
-demo.run()
