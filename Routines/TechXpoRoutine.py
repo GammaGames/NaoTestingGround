@@ -1,11 +1,14 @@
 # *************************************************************
 # PROJECT: ShowRobbie2
 #
-# EXECUTION ENVIRONMENTS: Python 2.7 on Windows 10
+# EXECUTION ENVIRONMENTS:
+# Python 2.7 on Windows 10,
+# Python 2.7 on Windows 7
 #
 # DEVELOPED WITH:
 # Eclipse Neon.1 with PyDev on Windows 10,
-# PyCharm Community 2016.3 on Windows 7
+# PyCharm Community 2016.3 on Windows 7,
+# PyCharm Community 2016.3.1 on Windows 7
 #
 # AUTHORS: Jesse Lieberg, Logan Warner
 #

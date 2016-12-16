@@ -1,11 +1,15 @@
 # ****************************************************************
 # PROJECT: ShowRobbieGUI
 #
-# EXECUTION ENVIRONMENTS: Eclipse Neon.1 with PyDev
+# EXECUTION ENVIRONMENTS:
+# Python 2.7 on Windows 10,
+# Python 2.7 on Windows 7
 #
-# DEVELOPED WITH: Python 2.7 on Windows 10
+# DEVELOPED WITH:
+# Eclipse Neon.1 with PyDev on Windows 10,
+# PyCharm Community 2016.3.1 on Windows 7
 #
-# AUTHOR: Jesse Lieberg
+# AUTHORS: Jesse Lieberg, Logan Warner
 #
 # DESCRIPTION: Routine superclass for routines to run from the GUI
 # ****************************************************************
@@ -95,4 +99,4 @@ class SetTrace(object):
     #__exit__
 #class SetTrace
 
-
+#end Routine.py
