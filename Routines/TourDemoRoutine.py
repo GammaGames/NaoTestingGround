@@ -17,12 +17,13 @@
 # Python imports
 # --------------
 import math
-import sys
 import time
 
+# -------------------
+# Application imports
+# -------------------
 from CustomMotions import CustomMotions
 from naoqi import ALProxy
-
 from NaoTestingGround import Routine
 
 
@@ -144,6 +145,5 @@ class TourDemoRoutine(Routine.Routine):
         self.speechProxy.say("I couldn't find the mark.")
         self.motions.sitDown()
         self.running = False
-        sys.exit()
     #fail
 #end TourDemoRoutine.py
