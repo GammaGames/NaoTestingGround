@@ -85,7 +85,7 @@ class TourDemoRoutine(Routine.Routine):
         self.motions.wave(True)
         self.speechProxy.say("Hello, I'm Robbie. I'm a NAO robot.")
         self.motions.lookForward()
-        self.motions.lookUp(-math.pi/7)
+        self.motions.lookUp(-math.pi/6)
         self.speechProxy.say("I was designed and manufactured by the"
                              " Japanese company SoftBank.")
         time.sleep(1)
