@@ -56,23 +56,25 @@ class TechXpoRoutine(Routine.Routine):
         self.motions.standUp()
 
         self.motions.wave(async=True)
-        self.speechProxy.say("Hi there, I'm Robbie. I was built by the Aldebaran company in France.")
-        self.speechProxy.say("I am the property of the Montana Tech Computer Science Department.")
+        self.speechProxy.say("Hi there, I'm Robbie. I was built by the"
+                             " Japanese company SoftBank.")
+        self.speechProxy.say("I am the property of the Montana Tech"
+                             " Computer Science Department.")
 
-        self.speechProxy.say("This demonstration is a much shorter version"\
-                             " of a performance for tours for prospective"\
+        self.speechProxy.say("This demonstration is a much shorter version"
+                             " of a performance for tours for prospective"
                              " students.")
         time.sleep(.5)
 
-        self.speechProxy.say("The performance is programmed"\
-                             " by the 2016-17 senior software engineering"\
-                             " design project team, consisting of"\
+        self.speechProxy.say("The performance is programmed"
+                             " by the 2016-17 senior software engineering"
+                             " design project team, consisting of"
                              " Jesse Lieberg and Logan Warner.")
         time.sleep(.5)
 
-        self.speechProxy.say("One of them can show you some pictures of"\
-                             "it after I sit back down. I hope you enjoy"\
-                             " this year's Tekxpo,"\
+        self.speechProxy.say("One of them can show you some pictures of"
+                             " it after I sit back down. I hope you enjoy"
+                             " this year's Tekxpo,"
                              " thank you for listening.")
 
         self.motions.sitDown()
