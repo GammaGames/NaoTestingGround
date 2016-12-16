@@ -18,6 +18,7 @@
 # Python imports
 # --------------
 import math
+import time
 
 from naoqi import ALProxy
 
@@ -187,8 +188,9 @@ class CustomMotions():
         incrementAngle = math.pi/12
         maxAngle = math.pi/2
         markData = None
-        turnSpeed = .9
+        turnSpeed = .8
         while not attempts >= maxAttemptsPR:
+            time.sleep(0.2)
             markData = NaoMarkModule.getMarkData(self.memoryProxy,
                                                  self.landmarkProxy)
             if not markData or len(markData) == 0:
@@ -210,7 +212,6 @@ class CustomMotions():
 
             self.motionProxy.angleInterpolation("HeadYaw", headAngle,
                                                 turnSpeed, True)
-            turnSpeed = 1
         #while not reached maximum attempts
         return markData
     #lookAroundForMark

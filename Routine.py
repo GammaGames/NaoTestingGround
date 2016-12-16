@@ -58,6 +58,7 @@ class Routine(object):
         try:
             with SetTrace(self.monitor):
                 self.perform()
+            print self.currentStep
         except StopIteration:
             pass
         finally:
