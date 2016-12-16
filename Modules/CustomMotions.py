@@ -176,7 +176,7 @@ class CustomMotions():
     #lookForward
 
     def lookUp(self, radiansPR):
-        self.lookTo(self.getLookAngle(), -radiansPR)
+        self.lookTo(radiansVerticalPR=-radiansPR)
     #lookUp
 
     def lookAroundForMark(self, markNumPR=None, maxAttemptsPR=4):
@@ -188,9 +188,9 @@ class CustomMotions():
         incrementAngle = math.pi/12
         maxAngle = math.pi/2
         markData = None
-        turnSpeed = .8
+        turnSpeed = .75
         while not attempts >= maxAttemptsPR:
-            time.sleep(0.2)
+            time.sleep(0.35)
             markData = NaoMarkModule.getMarkData(self.memoryProxy,
                                                  self.landmarkProxy)
             if not markData or len(markData) == 0:
