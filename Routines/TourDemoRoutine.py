@@ -36,7 +36,7 @@ class TourDemoRoutine(Routine.Routine):
         '''
         Constructor
         '''
-        self.numberSteps = 54
+        self.numberSteps = 55
     # __init__
 
     def connect(self, IP_PR="10.0.0.7", port_PR=9559):
@@ -49,6 +49,7 @@ class TourDemoRoutine(Routine.Routine):
 
     def perform(self):
         self.autonomousLifeProxy.setState("disabled")
+        self.speechProxy.setVolume(0.75)
 
         self.motions.sitDown()
         self.speechProxy.say("Thank you for waking me,"

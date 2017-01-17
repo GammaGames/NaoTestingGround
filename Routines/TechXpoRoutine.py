@@ -35,7 +35,7 @@ class TechXpoRoutine(Routine.Routine):
         '''
         Constructor
         '''
-        self.numberSteps = 14
+        self.numberSteps = 15
     #__init__
 
     def connect(self, IP_PR="10.0.0.7", port_PR=9559):
@@ -53,6 +53,7 @@ class TechXpoRoutine(Routine.Routine):
             # Intentionally left empty to let the routine run on an
             # emulated NAO bot through Choreographe
             pass
+        self.speechProxy.setVolume(0.7)
         self.motions.standUp()
 
         self.motions.wave(async=True)
